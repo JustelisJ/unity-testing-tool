@@ -1,0 +1,242 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Unity java server endpoints",
+    "description": "All the endpoints and their requests/responses",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/video": {
+      "post": {
+        "summary": "Saves game recording",
+        "description": "Saves game recording inside resource/video directory",
+        "consumes": [
+          "video/mp4"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/Game"
+          },
+          {
+            "$ref": "#/parameters/Build"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Video saved on the server",
+            "examples": {
+              "application/text": "File is uploaded successfully"
+            }
+          },
+          "400": {
+            "description": "There were some problems uploading the video"
+          }
+        }
+      }
+    },
+    "/video/recent": {
+      "get": {
+        "summary": "Returns the most recent video uploaded to the server",
+        "description": "Returns the relative path for the most recent video uploaded to the server",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Path to the video",
+            "examples": {
+              "application/text": "./resources/videos/{gameName}/{buildId}/{playRun}.mp4"
+            }
+          },
+          "400": {
+            "description": "Video could not be found",
+            "examples": {
+              "application/text": "Video could not be found"
+            }
+          },
+          "400": {
+            "description": "There are no videos on the server",
+            "examples": {
+              "application/text": "There are no videos"
+            }
+          }
+        }
+      }
+    },
+    "/bug": {
+      "post": {
+        "summary": "Saves bug report",
+        "description": "Endpoint to receive bug reports from players",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the saved bug report",
+            "schema": {
+              "$ref": "#/definitions/BugReportDTO"
+            },
+            "examples": {
+              "application/json": {
+                "buildId": "1.0.1",
+                "runId": "1.0.1",
+                "time": "10",
+                "notes": "I walked through a wall"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Returns a list of bug for a specific run",
+        "description": "Returns all the bugs for a run",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/Game"
+          },
+          {
+            "$ref": "#/parameters/Build"
+          },
+          {
+            "$ref": "#/parameters/RunId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All bug reports",
+            "schema": {
+              "$ref": "#/definitions/BugReportDTOResponse"
+            },
+            "examples": {
+              "BugReportDTOResponse": [
+                {
+                  "buildId": "1.0.1",
+                  "runId": "1.0.1",
+                  "time": "10",
+                  "notes": "I walked through a wall"
+                },
+                {
+                  "buildId": "1.0.1",
+                  "runId": "1.0.1",
+                  "time": "100",
+                  "notes": "The player glitched"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "Game": {
+      "description": "Name of the game",
+      "name": "Game",
+      "type": "string",
+      "required": true,
+      "in": "header",
+      "minLength": 1,
+      "maxLength": 50
+    },
+    "Build": {
+      "description": "Games build",
+      "name": "Build",
+      "type": "string",
+      "required": true,
+      "in": "header",
+      "minLength": 1,
+      "maxLength": 50
+    },
+    "RunId": {
+      "description": "Players run identifier",
+      "name": "RunId",
+      "type": "string",
+      "required": true,
+      "in": "header",
+      "minLength": 1,
+      "maxLength": 50
+    }
+  },
+  "definitions": {
+    "BugReportDTO": {
+      "description": "Bug report DTO",
+      "type": "object",
+      "required": [
+        "game",
+        "buildId",
+        "runId",
+        "time",
+        "notes"
+      ],
+      "properties": {
+        "game": {
+          "description": "Name of the game",
+          "type": "string",
+          "example": "The fun adventures of ...",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "buildId": {
+          "description": "Build id identifies which build of a game the bug was reported on",
+          "type": "string",
+          "example": "1.0.1",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^\\d+(\\.\\d+)*$"
+        },
+        "runId": {
+          "description": "Run id identifies which run it belongs to",
+          "type": "string",
+          "example": "1.0.1",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^\\d+(\\.\\d+)*$"
+        },
+        "time": {
+          "description": "Time of the video where the bug was reported",
+          "type": "number",
+          "example": "10",
+          "minimum": 0
+        },
+        "notes": {
+          "description": "Players notes of what happened",
+          "type": "string",
+          "example": "I walked through a wall",
+          "minLength": 0,
+          "maxLength": 1000
+        }
+      }
+    },
+    "BugReportDTOResponse": {
+      "description": "List of bug reports for a run",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/BugReportDTO"
+      },
+      "example": [
+        {
+          "buildId": "1.0.1",
+          "runId": "1.0.1",
+          "time": "10",
+          "notes": "I walked through a wall"
+        },
+        {
+          "buildId": "1.0.1",
+          "runId": "1.0.1",
+          "time": "100",
+          "notes": "The player glitched"
+        }
+      ]
+    }
+  }
+}

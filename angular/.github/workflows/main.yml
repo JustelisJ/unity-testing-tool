@@ -1,0 +1,33 @@
+name: Discord notification
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  notification:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Success
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+              severity: info
+              details: Action Succeeded!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+              severity: error
+              details: Action Failed!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Cancelled
+        uses: rjstone/discord-webhook-notify@v1
+        if: cancelled()
+        with:
+              severity: warn
+              details: Action Cancelled!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
