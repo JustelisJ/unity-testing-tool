@@ -1,0 +1,122 @@
+# Java ignores #
+java/HELP.md
+java/target/
+!java/.mvn/wrapper/maven-wrapper.jar
+!java/**/src/main/**/target/
+!java/**/src/test/**/target/
+
+### STS ###
+java/.apt_generated
+java/.classpath
+java/.factorypath
+java/.project
+java/.settings
+java/.springBeans
+java/.sts4-cache
+
+### IntelliJ IDEA ###
+java/.idea
+java/*.iws
+java/*.iml
+java/*.ipr
+
+### NetBeans ###
+/java/nbproject/private/
+/java/nbbuild/
+/java/dist/
+/java/nbdist/
+/java/.nb-gradle/
+/java/build/
+!java/**/src/main/**/build/
+!java/**/src/test/**/build/
+
+### VS Code ###
+java/.vscode/
+
+
+## Repository ##
+java/src/main/resources/application-local.properties
+
+### Maven template
+java/pom.xml.tag
+java/pom.xml.releaseBackup
+java/pom.xml.versionsBackup
+java/pom.xml.next
+java/release.properties
+java/dependency-reduced-pom.xml
+java/buildNumber.properties
+java/.mvn/timing.properties
+# https://github.com/takari/maven-wrapper#usage-without-binary-jar
+java/.mvn/wrapper/maven-wrapper.jar
+
+### Video recordings ###
+java/src/main/resources/videos
+
+### Database files ###
+java/src/main/resources/database
+
+
+# Angular ignores #
+# compiled output
+/angular/dist
+/angular/tmp
+/angular/out-tsc
+# Only exists if Bazel was run
+/angular/bazel-out
+
+# dependencies
+/angular/node_modules
+
+# profiling files
+angular/chrome-profiler-events*.json
+angular/speed-measure-plugin*.json
+
+# IDEs and editors
+/angular/.idea
+angular/.project
+angular/.classpath
+angular/.c9/
+angular/*.launch
+angular/.settings/
+angular/*.sublime-workspace
+
+# IDE - VSCode
+angular/.vscode/*
+!angular/.vscode/settings.json
+!angular/.vscode/tasks.json
+!angular/.vscode/launch.json
+!angular/.vscode/extensions.json
+angular/.history/*
+
+# misc
+/angular/.sass-cache
+/angular/connect.lock
+/angular/coverage
+/angular/libpeerconnection.log
+angular/npm-debug.log
+angular/yarn-error.log
+angular/testem.log
+/angular/typings
+
+# System Files
+angular/.DS_Store
+angular/Thumbs.db
+
+
+# Common IDEA ignores #
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
