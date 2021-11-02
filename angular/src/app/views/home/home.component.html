@@ -31,6 +31,22 @@
     <video #media [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto" crossorigin>
     </video>
   </vg-player>
+  
+  <div class="timeline-container">
+    <div class="timeline-line">
+
+    </div>
+    <div class="start-time">
+      <p class="start-time-text">00:00</p>
+    </div>
+    <div class="end-time">
+      <p class="end-time-text">15:00</p>
+    </div>
+  </div>
+
+  <div class="latest-div"><button mat-button class="latest-button" (click)="refreshLatestVideo()">Latest Video</button>
+  </div>
+
 
   <!-- <ul class="player-list">
     <li *ngFor="let vdo of videoItems; let $index = index" (click)="startPlaylistVdo(vdo, $index)"

@@ -7,16 +7,17 @@ import { VideoService } from '../../shared/services/video.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  videoName: String = '';
+  private videoName = '';
+
   videoItems = [
-    {
-      name: 'Big Buck Bunny',
-      src: 'http://static.videogular.com/assets/videos/big_buck_bunny_720p_h264.mov',
-      type: 'video/mp4',
-    },
     {
       name: 'Business Intelligence Presentation',
       src: 'assets/videos/BUI-Presentation.mp4',
+      type: 'video/mp4',
+    },
+    {
+      name: 'Big Buck Bunny',
+      src: 'http://static.videogular.com/assets/videos/big_buck_bunny_720p_h264.mov',
       type: 'video/mp4',
     },
     {

@@ -6,8 +6,7 @@ export const environment = {
   production: false,
   version: 'DEVELOP',
   apiConfig: {
-    api_url: 'http://34.117.170.186:8080',
-    api_local_url: 'http://localhost:8080',
+    api_local_url: 'http://localhost:8080'
   },
 };
 
