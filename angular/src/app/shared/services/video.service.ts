@@ -10,15 +10,15 @@ import { Router } from '@angular/router';
 export class VideoService {
   private videoUrl = '/video/recent'; // URL to video server
 
-  public videoName$: BehaviorSubject<String> = new BehaviorSubject<String>(null);
+  public videoName$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  public getVideoName() {
+  public getVideoName(): any {
     try {
       const resp = this.http
-        .get<String>(environment.apiConfig.api_local_url + this.videoUrl)
-        .subscribe((data: String) => {
+        .get<string>(environment.apiConfig.api_local_url + this.videoUrl)
+        .subscribe((data: string) => {
           this.videoName$.next(data);
           console.log(this.videoName$);
           // this.router.navigate(['/view-name']);

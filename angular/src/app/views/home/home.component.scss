@@ -39,3 +39,48 @@
 li.selected {
   background: #03A9F4 !important;
 }
+
+.timeline-container {
+  width: 100%;
+  height: 100px;
+  margin-top: 20px;
+}
+
+.timeline-line {
+  width: 100%;
+  height: 15px;
+  background-color: red;
+  border: solid black 1px;
+  border-radius: 10px;
+}
+
+.start-time {
+  float: left;
+  width: 6%;
+  height: 35px;
+}
+
+.start-time-text {
+  text-align: left;
+}
+
+.end-time {
+  float: right;
+  width: 6%;
+  height: 35px;
+}
+
+.end-time-text {
+  text-align: right;
+}
+
+.latest-div {
+  margin-top: 15px;
+  width: 150px;
+  height: 30px;
+}
+
+.latest-button {
+  width: 149px;
+  height: 28px;
+}
