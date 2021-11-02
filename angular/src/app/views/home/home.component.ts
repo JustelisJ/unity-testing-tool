@@ -8,37 +8,27 @@ import { VideoService } from '../../shared/services/video.service';
 })
 export class HomeComponent implements OnInit {
   private videoName = '';
-
-  videoItems = [
-    {
-      name: 'Business Intelligence Presentation',
-      src: 'assets/videos/BUI-Presentation.mp4',
-      type: 'video/mp4',
-    },
-    {
-      name: 'Big Buck Bunny',
-      src: 'http://static.videogular.com/assets/videos/big_buck_bunny_720p_h264.mov',
-      type: 'video/mp4',
-    },
-    {
-      name: 'Elephants Dream',
-      src: 'http://static.videogular.com/assets/videos/elephants-dream.mp4',
-      type: 'video/mp4',
-    },
-  ];
-
-  activeIndex = 0;
-  currentVideo = this.videoItems[this.activeIndex];
-  data: any;
-  duration = 0;
+  private videoItem;
+  public currentVideo;
+  private duration = 0;
+  private data: any;
+  private activeIndex = 0;
 
   constructor(private videoService: VideoService) {}
 
   ngOnInit(): void {
-    // this.videoService.getVideoName();
-    // this.videoService.videoName$.subscribe((v) => {
-    //   this.videoName = v;
-    // });
+    this.videoService.getVideoName();
+    this.videoService.videoName$.subscribe((v) => {
+      this.videoName = v;
+      this.videoItem = [
+        {
+          name: 'Business Intelligence Presentation',
+          src: 'assets/videos/' + this.videoName,
+          type: 'video/mp4',
+        },
+      ];
+      this.currentVideo = this.videoItem[this.activeIndex];
+    });
   }
 
   videoPlayerInit(data: any): void {
@@ -53,8 +43,8 @@ export class HomeComponent implements OnInit {
   }
 
   refreshLatestVideo(): void {
-    // this.videoService.getVideoName();
-    this.currentVideo = this.videoItems[this.activeIndex];
+    this.videoService.getVideoName();
+    this.currentVideo = this.videoItem[this.activeIndex];
 
     const video = document.createElement('video');
     video.preload = 'metadata';
@@ -69,11 +59,11 @@ export class HomeComponent implements OnInit {
   nextVideo(): void {
     this.activeIndex++;
 
-    if (this.activeIndex === this.videoItems.length) {
+    if (this.activeIndex === this.videoItem.length) {
       this.activeIndex = 0;
     }
 
-    this.currentVideo = this.videoItems[this.activeIndex];
+    this.currentVideo = this.videoItem[this.activeIndex];
   }
 
   initVdo(): void {
