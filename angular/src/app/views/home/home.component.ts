@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
   activeIndex = 0;
   currentVideo = this.videoItems[this.activeIndex];
   data: any;
+  duration = 0;
 
   constructor(private videoService: VideoService) {}
 
@@ -49,6 +50,20 @@ export class HomeComponent implements OnInit {
     this.data
       .getDefaultMedia()
       .subscriptions.ended.subscribe(this.nextVideo.bind(this));
+  }
+
+  refreshLatestVideo(): void {
+    // this.videoService.getVideoName();
+    this.currentVideo = this.videoItems[this.activeIndex];
+
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+
+    video.onloadedmetadata = () => {
+      window.URL.revokeObjectURL(this.currentVideo.src);
+      this.duration = video.duration;
+    };
+    console.log(video);
   }
 
   nextVideo(): void {
