@@ -28,6 +28,14 @@ export class HomeComponent implements OnInit {
         },
       ];
       this.currentVideo = this.videoItem[this.activeIndex];
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+
+      video.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(this.currentVideo.src);
+        this.duration = video.duration;
+      };
+      console.log(video);
     });
   }
 
