@@ -53,7 +53,7 @@ java/.mvn/wrapper/maven-wrapper.jar
 videos
 
 ### Database files ###
-java/src/main/resources/database
+database
 
 
 # Angular ignores #
