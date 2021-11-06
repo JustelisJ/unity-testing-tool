@@ -3,7 +3,6 @@ package com.endregas.warriors.unitytesting.services.impl;
 import com.endregas.warriors.unitytesting.exceptions.NoVideosException;
 import com.endregas.warriors.unitytesting.exceptions.VideoNotFoundException;
 import com.endregas.warriors.unitytesting.services.VideoService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-@Slf4j
 @Service
 public class VideoServiceImpl implements VideoService {
 
@@ -31,9 +29,7 @@ public class VideoServiceImpl implements VideoService {
     public String findMostRecentVideo() throws NoVideosException, VideoNotFoundException {
         File videoDirectory = new File(VIDEO_DIRECTORY);
         validateThatVideoDirectoriesExist(videoDirectory);
-        String lastModifiedVideoFile = getLastModifiedVideoFile(videoDirectory);
-        log.info(String.format("Last modified video file is %s", lastModifiedVideoFile));
-        return lastModifiedVideoFile;
+        return getLastModifiedVideoFile(videoDirectory);
     }
 
     private void validateThatVideoDirectoriesExist(File videoDirectory) throws NoVideosException {
@@ -81,7 +77,6 @@ public class VideoServiceImpl implements VideoService {
         if (!convertFile.createNewFile()) {
             convertFile = addSuffix(convertFile, INITIAL_POSTFIX);
         }
-        long startTime = System.nanoTime();
         try (InputStream in = file.getInputStream(); FileOutputStream out = new FileOutputStream(convertFile)) {
             byte[] buffer = new byte[4096]; //Buffer size, Usually 1024-4096
             int len;
@@ -89,9 +84,6 @@ public class VideoServiceImpl implements VideoService {
                 out.write(buffer, 0, len);
             }
         }
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime) / 1000000;
-        log.info(String.format("File %s (%d bytes) was uploaded in %d milliseconds", file.getName(), file.getSize(), duration));
     }
 
     private File createDirectoryIfDoesntExist(String game, String build) {
