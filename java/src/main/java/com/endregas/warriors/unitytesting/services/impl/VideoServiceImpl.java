@@ -1,5 +1,6 @@
 package com.endregas.warriors.unitytesting.services.impl;
 
+import com.endregas.warriors.unitytesting.exceptions.DirectoryDoesNotExistException;
 import com.endregas.warriors.unitytesting.exceptions.NoVideosException;
 import com.endregas.warriors.unitytesting.exceptions.VideoNotFoundException;
 import com.endregas.warriors.unitytesting.services.VideoService;
@@ -21,7 +22,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public void saveVideo(MultipartFile file, String game, String build) throws IOException {
-        File directory = createDirectoryIfDoesntExist(game, build);
+        File directory = validateThatGameBuildDirectoryExists(game, build);
         saveFile(directory, file);
     }
 
@@ -86,10 +87,10 @@ public class VideoServiceImpl implements VideoService {
         }
     }
 
-    private File createDirectoryIfDoesntExist(String game, String build) {
+    private File validateThatGameBuildDirectoryExists(String game, String build) throws DirectoryDoesNotExistException {
         File directory = new File(VIDEO_DIRECTORY + game + SLASH + build + SLASH);
         if (!directory.exists()) {
-            directory.mkdirs();
+            throw new DirectoryDoesNotExistException(game, build);
         }
         return directory;
     }
