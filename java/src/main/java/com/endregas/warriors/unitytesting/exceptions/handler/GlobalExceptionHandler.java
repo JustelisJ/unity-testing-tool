@@ -1,5 +1,6 @@
 package com.endregas.warriors.unitytesting.exceptions.handler;
 
+import com.endregas.warriors.unitytesting.exceptions.DirectoryDoesNotExistException;
 import com.endregas.warriors.unitytesting.exceptions.NoVideosException;
 import com.endregas.warriors.unitytesting.exceptions.VideoNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DirectoryDoesNotExistException.class)
+    public ResponseEntity<Object> handleDirectoryDoesNotExistExceptions(DirectoryDoesNotExistException ex) {
         log.error(ex.getMessage());
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
