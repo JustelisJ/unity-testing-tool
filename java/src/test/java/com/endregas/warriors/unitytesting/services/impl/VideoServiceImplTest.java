@@ -1,6 +1,10 @@
 package com.endregas.warriors.unitytesting.services.impl;
 
+import com.endregas.warriors.unitytesting.exceptions.DirectoryDoesNotExistException;
 import com.endregas.warriors.unitytesting.exceptions.NoVideosException;
+import com.endregas.warriors.unitytesting.exceptions.VideoNotFoundException;
+import com.endregas.warriors.unitytesting.services.BuildService;
+import com.endregas.warriors.unitytesting.services.GameService;
 import com.endregas.warriors.unitytesting.services.VideoService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,25 +17,32 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class VideoServiceImplTest {
 
-    private static final String VIDEO_DIRECTORY = "src/main/resources/videos/";
+    private static final String VIDEO_DIRECTORY = "src\\main\\resources\\videos\\";
     private static final int INITIAL_POSTFIX = 1;
     private static final String TEST_VIDEO_NAME = "black screen.mp4";
     private static final String THIRD_TEST_VIDEO_NAME = "black screen(2).mp4";
     private static final String SLASH = "/";
+    public static final String GAME_NAME = "testGame";
+    public static final String BUILD_VERSION = "1.0";
 
     VideoService videoService = new VideoServiceImpl();
 
     File videoDirectory;
 
     @BeforeEach
-    void setup() {
+    void setup() throws DirectoryDoesNotExistException {
         videoDirectory = new File(VIDEO_DIRECTORY);
+        GameService gameService = new GameServiceImpl();
+        gameService.createNewGameDirectory(GAME_NAME);
+        BuildService buildService = new BuildServiceImpl();
+        buildService.createNewBuildInGameDirectory(GAME_NAME, BUILD_VERSION);
         videoDirectory.mkdirs();
     }
 
@@ -66,7 +77,7 @@ class VideoServiceImplTest {
     @Test
     void findMostRecentVideo_noVideosInDirectory() {
         assertTrue(videoDirectory.exists());
-        assertThrows(NoVideosException.class, () -> videoService.findMostRecentVideo());
+        assertThrows(VideoNotFoundException.class, () -> videoService.findMostRecentVideo());
     }
 
     @Test
@@ -75,7 +86,7 @@ class VideoServiceImplTest {
         for (int i = 0; i < 1; i++) {
             saveFile(testVideo);
         }
-        assertEquals(TEST_VIDEO_NAME, videoService.findMostRecentVideo());
+        assertEquals(VIDEO_DIRECTORY + TEST_VIDEO_NAME, videoService.findMostRecentVideo());
     }
 
     @Test
@@ -85,7 +96,7 @@ class VideoServiceImplTest {
             saveFile(testVideo);
             Thread.sleep(100);
         }
-        assertEquals(THIRD_TEST_VIDEO_NAME, videoService.findMostRecentVideo());
+        assertEquals(VIDEO_DIRECTORY + THIRD_TEST_VIDEO_NAME, videoService.findMostRecentVideo());
     }
 
     private void saveFile(MultipartFile file) throws IOException {
@@ -112,8 +123,25 @@ class VideoServiceImplTest {
 
     @Test
     void saveVideo_successfullySaves() {
+        String game = "Game name";
+        String build = "1.0";
         MultipartFile testFile = new MockMultipartFile(TEST_VIDEO_NAME, TEST_VIDEO_NAME, "video", new byte[0]);
-        assertDoesNotThrow(() -> videoService.saveVideo(testFile, "Game name", "1.0"));
+        File gameBuildDirectory = new File(VIDEO_DIRECTORY + game + SLASH + build + SLASH);
+        assertTrue(gameBuildDirectory.mkdirs());
+        assertDoesNotThrow(() -> videoService.saveVideo(testFile, game, build));
+    }
+
+    @Test
+    void getAllVideosForGameAndBuild_noVideos() throws NoVideosException {
+        assertEquals(List.of(), videoService.getAllVideosForGameAndBuild("testGame", "1.0"));
+    }
+
+    @Test
+    void getAllVideosForGameAndBuild_2Videos() throws IOException {
+        MultipartFile testFile = new MockMultipartFile(TEST_VIDEO_NAME, TEST_VIDEO_NAME, "video", new byte[0]);
+        videoService.saveVideo(testFile, GAME_NAME, BUILD_VERSION);
+        videoService.saveVideo(testFile, GAME_NAME, BUILD_VERSION);
+        assertEquals(List.of("black screen(1).mp4", "black screen.mp4"), videoService.getAllVideosForGameAndBuild(GAME_NAME, BUILD_VERSION));
     }
 
 }
