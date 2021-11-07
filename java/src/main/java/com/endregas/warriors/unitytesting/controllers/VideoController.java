@@ -23,8 +23,8 @@ public class VideoController {
 
     @PostMapping(value = "/video", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> saveVideo(@RequestBody @NotNull MultipartFile file,
-                                            @RequestParam(name = "Game") @NotNull @Size(max = 50) String game,
-                                            @RequestParam(name = "Build") @NotNull @Size(max = 20) String build) throws IOException {
+                                            @RequestParam(name = "game") @NotNull @Size(max = 50) String game,
+                                            @RequestParam(name = "build") @NotNull @Size(max = 20) String build) throws IOException {
         long startTime = System.nanoTime();
         videoService.saveVideo(file, game, build);
         long endTime = System.nanoTime();
