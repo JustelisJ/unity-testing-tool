@@ -36,7 +36,10 @@
             }
           },
           "400": {
-            "description": "There were some problems uploading the video"
+            "description": "There were some problems uploading the video",
+            "examples": {
+              "application/text": "Game directory [game/build] does not exist"
+            }
           }
         }
       }
@@ -132,6 +135,44 @@
                   "notes": "The player glitched"
                 }
               ]
+            }
+          }
+        }
+      }
+    },
+    "/game": {
+      "get": {
+        "summary": "Returns all the game names according to directories on the server",
+        "description": "Returns all the game names according to directories on the server",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of game names",
+            "examples": {
+              "application/text": "[\"testGame\"]"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new directory for a game",
+        "description": "Create a new directory for a game",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the name of the created directory",
+            "examples": {
+              "application/text": "testGame"
+            }
+          },
+          "400": {
+            "description": "Returns an exception, that a new directory was not created",
+            "examples": {
+              "application/text": "Game directory testGame/ does not exist"
             }
           }
         }
