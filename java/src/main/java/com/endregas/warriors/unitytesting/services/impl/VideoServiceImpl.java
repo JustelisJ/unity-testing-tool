@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -19,6 +20,21 @@ public class VideoServiceImpl implements VideoService {
     public static final String VIDEO_DIRECTORY = "src/main/resources/videos/";
     public static final int INITIAL_POSTFIX = 1;
     public static final String SLASH = "/";
+
+    @Override
+    public List<String> getAllVideosForGameAndBuild(String game, String build) throws NoVideosException {
+        File buildDirectory = new File(VIDEO_DIRECTORY + game + SLASH + build + SLASH);
+        validateDirectoriesExist(buildDirectory);
+        File[] allFiles = buildDirectory.listFiles();
+        if (allFiles != null) {
+            return Arrays.stream(allFiles)
+                    .filter(File::isFile)
+                    .map(File::getName)
+                    .collect(Collectors.toList());
+        } else {
+            return List.of();
+        }
+    }
 
     @Override
     public void saveVideo(MultipartFile file, String game, String build) throws IOException {
@@ -29,11 +45,11 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public String findMostRecentVideo() throws NoVideosException, VideoNotFoundException {
         File videoDirectory = new File(VIDEO_DIRECTORY);
-        validateThatVideoDirectoriesExist(videoDirectory);
+        validateDirectoriesExist(videoDirectory);
         return getLastModifiedVideoFile(videoDirectory);
     }
 
-    private void validateThatVideoDirectoriesExist(File videoDirectory) throws NoVideosException {
+    private void validateDirectoriesExist(File videoDirectory) throws NoVideosException {
         if (!videoDirectory.exists()) {
             videoDirectory.mkdirs();
             throw new NoVideosException();
