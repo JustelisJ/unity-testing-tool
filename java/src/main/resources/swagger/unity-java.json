@@ -26,6 +26,9 @@
           },
           {
             "$ref": "#/parameters/Build"
+          },
+          {
+            "$ref": "#/parameters/file"
           }
         ],
         "responses": {
@@ -79,6 +82,11 @@
         "description": "Endpoint to receive bug reports from players",
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/report"
+          }
         ],
         "responses": {
           "200": {
@@ -162,6 +170,11 @@
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/Game"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Returns the name of the created directory",
@@ -185,7 +198,7 @@
       "name": "Game",
       "type": "string",
       "required": true,
-      "in": "header",
+      "in": "query",
       "minLength": 1,
       "maxLength": 50
     },
@@ -194,7 +207,7 @@
       "name": "Build",
       "type": "string",
       "required": true,
-      "in": "header",
+      "in": "query",
       "minLength": 1,
       "maxLength": 50
     },
@@ -203,9 +216,26 @@
       "name": "RunId",
       "type": "string",
       "required": true,
-      "in": "header",
+      "in": "query",
       "minLength": 1,
       "maxLength": 50
+    },
+    "file": {
+      "description": "Play run recording",
+      "name": "file",
+      "type": "file",
+      "required": true,
+      "in": "formData"
+    },
+    "report": {
+      "description": "Bug report DTO",
+      "name": "report",
+      "type": "string",
+      "required": true,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/BugReportDTO"
+      }
     }
   },
   "definitions": {
