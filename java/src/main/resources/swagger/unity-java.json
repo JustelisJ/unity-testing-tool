@@ -11,6 +11,29 @@
   ],
   "paths": {
     "/video": {
+      "get": {
+        "summary": "Get all video names for a game/build",
+        "description": "Get all video names for a game/build",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/Game"
+          },
+          {
+            "$ref": "#/parameters/Build"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of video names",
+            "examples": {
+              "application/text": "[\"video.mp4\"]"
+            }
+          }
+        }
+      },
       "post": {
         "summary": "Saves game recording",
         "description": "Saves game recording inside resource/video directory",

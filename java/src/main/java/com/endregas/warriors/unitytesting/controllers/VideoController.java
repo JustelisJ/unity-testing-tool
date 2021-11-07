@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -20,6 +21,15 @@ import java.io.IOException;
 public class VideoController {
 
     final VideoService videoService;
+
+    @GetMapping(value = "/video")
+    public ResponseEntity<List<String>> getAllVideos(
+                                            @RequestParam(name = "game") @NotNull @Size(max = 50) String game,
+                                            @RequestParam(name = "build") @NotNull @Size(max = 20) String build) throws NoVideosException {
+        List<String> allVideoNames = videoService.getAllVideosForGameAndBuild(game, build);
+        log.info("All videos fetched for {}/{}: {}", game, build, allVideoNames);
+        return ResponseEntity.ok().body(allVideoNames);
+    }
 
     @PostMapping(value = "/video", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> saveVideo(@RequestBody @NotNull MultipartFile file,
