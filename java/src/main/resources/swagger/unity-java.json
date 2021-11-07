@@ -28,7 +28,7 @@
             "$ref": "#/parameters/Build"
           },
           {
-            "$ref": "#/parameters/file"
+            "$ref": "#/parameters/File"
           }
         ],
         "responses": {
@@ -85,7 +85,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/report"
+            "$ref": "#/parameters/Report"
           }
         ],
         "responses": {
@@ -190,12 +190,69 @@
           }
         }
       }
+    },
+    "/game/build": {
+      "get": {
+        "summary": "Returns all builds for a game",
+        "description": "Returns all builds from a game directory on the server",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/Game"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of builds",
+            "examples": {
+              "application/text": "[\"1.0, 1.1\"]"
+            }
+          },
+          "400": {
+            "description": "Returns an exception, that game directory does not exist",
+            "examples": {
+              "application/text": "Game directory testGame/ does not exist"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new directory for a build",
+        "description": "Create a new directory for a build inside game directory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/Game"
+          },
+          {
+            "$ref": "#/parameters/Build"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the name of the created directory",
+            "examples": {
+              "application/text": "1.0"
+            }
+          },
+          "400": {
+            "description": "Returns an exception, that a new directory was not created",
+            "examples": {
+              "application/text": "Game directory testGame/1.0 does not exist"
+            }
+          }
+        }
+      }
     }
   },
   "parameters": {
     "Game": {
       "description": "Name of the game",
-      "name": "Game",
+      "name": "game",
       "type": "string",
       "required": true,
       "in": "query",
@@ -204,7 +261,7 @@
     },
     "Build": {
       "description": "Games build",
-      "name": "Build",
+      "name": "build",
       "type": "string",
       "required": true,
       "in": "query",
@@ -213,24 +270,23 @@
     },
     "RunId": {
       "description": "Players run identifier",
-      "name": "RunId",
+      "name": "runId",
       "type": "string",
       "required": true,
       "in": "query",
       "minLength": 1,
       "maxLength": 50
     },
-    "file": {
+    "File": {
       "description": "Play run recording",
       "name": "file",
       "type": "file",
       "required": true,
       "in": "formData"
     },
-    "report": {
+    "Report": {
       "description": "Bug report DTO",
       "name": "report",
-      "type": "string",
       "required": true,
       "in": "body",
       "schema": {
@@ -244,7 +300,7 @@
       "type": "object",
       "required": [
         "game",
-        "buildId",
+        "build",
         "runId",
         "time",
         "notes"
