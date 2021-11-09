@@ -270,6 +270,23 @@
           }
         }
       }
+    },
+    "/connect" : {
+      "get": {
+        "summary": "Checks connection and returns map of games with latest build",
+        "description": "Checks connection and returns map of games with latest build",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Map of game with latest build",
+            "examples": {
+              "application/text": "{\"testGame2\": \"1.1\",\"testGame\": \"1.1\"}"
+            }
+          }
+        }
+      }
     }
   },
   "parameters": {
