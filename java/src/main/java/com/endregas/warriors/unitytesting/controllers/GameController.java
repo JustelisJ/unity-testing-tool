@@ -5,10 +5,7 @@ import com.endregas.warriors.unitytesting.services.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,6 +18,7 @@ public class GameController {
 
     private final GameService gameService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/game")
     public ResponseEntity<List<String>> getAllGames() {
         List<String> games = gameService.getAllGames();
@@ -28,6 +26,7 @@ public class GameController {
         return ResponseEntity.ok(games);
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/game")
     public ResponseEntity<String> createGameDirectory(
             @RequestParam(name = "game") @NotNull @Size(max = 50) String game) throws DirectoryDoesNotExistException {

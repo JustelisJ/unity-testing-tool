@@ -65,7 +65,8 @@ public class VideoServiceImpl implements VideoService {
         Optional<String> optionalName = allVideoFiles.stream()
                 .max(Comparator.comparing(File::lastModified))
                 .map(File::getPath);
-        return optionalName.orElseThrow(VideoNotFoundException::new);
+        String lastModifiedVideoDirectory =  optionalName.orElseThrow(VideoNotFoundException::new);
+        return lastModifiedVideoDirectory.replaceFirst("src/main/resources/", "");
     }
 
     private List<File> getAllVideos(File videoDirectory) {

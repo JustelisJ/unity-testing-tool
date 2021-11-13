@@ -20,6 +20,7 @@ public class BugController {
 
     private final BugService bugService;
 
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/bug", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BugReportDTO> saveVideo(@Valid @RequestBody BugReportDTO report) {
         BugReportDTO savedBug = bugService.reportABug(report);
@@ -27,6 +28,7 @@ public class BugController {
         return ResponseEntity.ok(savedBug);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/bug")
     public ResponseEntity<List<BugReportDTO>> getRunBugs(
             @RequestParam(name = "game") @NotNull @Size(max = 50) String game,
