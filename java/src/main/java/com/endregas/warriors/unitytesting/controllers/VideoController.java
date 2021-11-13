@@ -22,6 +22,7 @@ public class VideoController {
 
     final VideoService videoService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/video")
     public ResponseEntity<List<String>> getAllVideos(
                                             @RequestParam(name = "game") @NotNull @Size(max = 50) String game,
@@ -31,6 +32,7 @@ public class VideoController {
         return ResponseEntity.ok().body(allVideoNames);
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/video", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> saveVideo(@RequestBody @NotNull MultipartFile file,
                                             @RequestParam(name = "game") @NotNull @Size(max = 50) String game,
@@ -43,6 +45,7 @@ public class VideoController {
         return ResponseEntity.ok().body("File is uploaded successfully");
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/video/recent")
     public ResponseEntity<String> getMostRecentVideo() throws NoVideosException, VideoNotFoundException {
         String lastModifiedVideoFile = videoService.findMostRecentVideo();
