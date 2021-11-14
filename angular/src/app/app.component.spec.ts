@@ -20,10 +20,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'The Unity Test Plugin'`, () => {
+  it(`should have as title 'WebApp'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('The Unity Test Plugin');
+    expect(app.title).toEqual('WebApp');
   });
 
   it('should render title', () => {

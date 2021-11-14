@@ -1,3 +1,8 @@
+
+<!-- <div class="title">
+  <h1 class="header">The Unity Test Plugin</h1>
+</div> -->
+
 <div class="video-player-wrapper">
 
   <vg-player (onPlayerReady)="videoPlayerInit($event)">
@@ -23,26 +28,38 @@
       <vg-fullscreen></vg-fullscreen>
     </vg-controls>
 
-    <video #media [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto" crossorigin>
+    <video #media [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto" crossorigin (loadedmetadata)="onMetadata($event,media)">
     </video>
   </vg-player>
 
   <div class="timeline-container">
     <div class="timeline-line">
+      <div class="bug-div change-color" *ngFor="let bug of bugs; let i = index" [attr.data-index]="i"
+      [style.width]="((bug.timeVideoReference.end - bug.timeVideoReference.start) / duration) * 100 + '%'"
+      [style.margin-left]="(bug.timeVideoReference.start / duration) * 100 + '%'"
+      [style.z-index]="i+1"
+      [style.background-color]="colors[i]"
+      (mouseenter)="showInfoOnHover(bug)"
+      (mouseleave)="clearInfo()"
+      ng-mouseover="hoverActive=true"
+      ng-mouseleave="hoverActive=false"
+      >  <!-- {'background-color':social.color} -->
+      </div>
+    </div>
 
+    <div class="time-div">
+      <div class="start-time"><p class="start-time-text">00:00:00</p></div>
+      <div class="end-time"><p class="end-time-text">{{ durationString }}</p></div>
     </div>
-    <div class="start-time">
-      <p class="start-time-text">00:00</p>
-    </div>
-    <div class="end-time">
-      <p class="end-time-text">15:00</p>
+    <div class="bug-info-container">
+      <div class="bug-info-text-div">
+        <h2 class="bug-text">{{ bugName }}</h2>
+        <h3 class="bug-text">{{ bugDescription }}</h3>
+      </div>
     </div>
   </div>
 
-  <div class="latest-div">
-    <button mat-button class="latest-button" (click)="refreshLatestVideo()">Latest Video</button>
-  </div>
-
+  <div class="latest-div"><button mat-button class="latest-button" (click)="refreshLatestVideo()">Latest Video</button></div>
 
   <!-- <ul class="player-list">
     <li *ngFor="let vdo of videoItems; let $index = index" (click)="startPlaylistVdo(vdo, $index)"

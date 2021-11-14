@@ -17,15 +17,15 @@ services:
     volumes:
       - .\videos:/app/src/main/resources/videos
 
-  angular:
-    build: angular
-    environment:
-      - IP=192.168.41.101
-    ports:
-      - "4200:80"
-    container_name: unity-angular
-    volumes:
-      - .\videos:/app/src/assets/videos
+  # angular:
+  #   build: angular
+  #   environment:
+  #     - IP=192.168.41.101
+  #   ports:
+  #     - "4200:80"
+  #   container_name: unity-angular
+  #   volumes:
+  #     - .\videos:/app/src/assets/videos
 
   db:
     image: 'postgres:latest'

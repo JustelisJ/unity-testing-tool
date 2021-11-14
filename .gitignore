@@ -63,6 +63,7 @@ database
 /angular/out-tsc
 # Only exists if Bazel was run
 /angular/bazel-out
+/angular/src/assets/videos
 
 # dependencies
 /angular/node_modules

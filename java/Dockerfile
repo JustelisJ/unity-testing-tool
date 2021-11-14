@@ -4,7 +4,7 @@ FROM openjdk:11
 
 WORKDIR /app
 
-COPY .mvn/ .mvn
+COPY .mvn ./.mvn
 COPY mvnw ./
 COPY pom.xml ./
 RUN ./mvnw dependency:go-offline
