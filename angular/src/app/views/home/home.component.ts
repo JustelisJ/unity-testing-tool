@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { VideoService } from '../../shared/services/video.service';
 import { Bug } from '../../shared/models/bug.model';
+import { VideoObject } from 'src/app/shared/models/video.model';
 
 @Component({
   selector: 'app-home',
@@ -8,25 +9,23 @@ import { Bug } from '../../shared/models/bug.model';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-  private videoName = '';
+  videoObject: VideoObject = {
+    name: '',
+    src: '',
+  };
   bugs: Bug[] = [];
   colors: string[] = [];
 
   videoItems = [
     {
-      name: 'Business Intelligence Presentation',
-      src: 'assets/' + this.videoName,
+      name: 'Company Presentation',
+      src: 'assets/videos/testGame/1.0/CompanyPres.mp4',
       type: 'video/mp4',
     },
-    // {
-    //   name: 'Big Buck Bunny',
-    //   src: 'http://static.videogular.com/assets/videos/big_buck_bunny_720p_h264.mov',
-    //   type: 'video/mp4',
-    // },
   ];
 
   activeIndex = 0;
-  currentVideo = this.videoItems[this.activeIndex];
+  currentVideo = null;
   data: any;
   duration = 0;
   durationString = '00:00:00';
@@ -42,7 +41,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.videoService.getVideoName();
     this.videoService.videoName$.subscribe((v) => {
-      this.videoName = v;
+      this.videoObject = v;
+      console.log(this.videoObject);
+      this.videoItems = [
+        {
+          name: this.videoObject?.name,
+          src: 'assets/' + this.videoObject?.src,
+          type: 'video/mp4',
+        },
+      ];
+      this.currentVideo = this.videoItems[this.activeIndex];
+      console.log(this.videoItems);
     });
     this.bugsInit();
     this.randColorPick();
@@ -110,7 +119,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
           end: 280,
         },
       },
-
     ];
     this.bugs = dummyBugs;
   }
@@ -159,7 +167,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       ':' +
       (seconds < 10 ? '0' + seconds : seconds);
     console.log('duration: ', this.duration / 60);
-    console.log(this.durationString);
   }
 
   randColorPick(): void {

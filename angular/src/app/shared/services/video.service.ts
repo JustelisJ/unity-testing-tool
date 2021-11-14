@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Bug } from '../models/bug.model';
+import { VideoObject } from '../models/video.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +12,8 @@ export class VideoService {
   private videoUrl = '/video/recent'; // URL to video endpoint
   private bugsUrl = '/bug/'; // URL to bug endpoint
 
-  public videoName$: BehaviorSubject<string> = new BehaviorSubject<string>(
-    null
-  );
+  public videoName$: BehaviorSubject<VideoObject> =
+    new BehaviorSubject<VideoObject>(null);
   public bugs$: BehaviorSubject<Bug[]> = new BehaviorSubject<Bug[]>(null);
 
   constructor(private http: HttpClient) {}
@@ -21,10 +21,10 @@ export class VideoService {
   public getVideoName(): any {
     try {
       const resp = this.http
-        .get<string>(environment.apiConfig.api_local_url + this.videoUrl)
-        .subscribe((data: string) => {
+        .get<VideoObject>(environment.apiConfig.api_local_url + this.videoUrl)
+        .subscribe((data: VideoObject) => {
           this.videoName$.next(data);
-          console.log(this.videoName$);
+          console.log(this.videoName$.value);
         });
       return resp;
     } catch (error) {
