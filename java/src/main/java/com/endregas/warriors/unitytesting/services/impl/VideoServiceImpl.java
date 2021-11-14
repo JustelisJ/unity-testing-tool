@@ -3,7 +3,9 @@ package com.endregas.warriors.unitytesting.services.impl;
 import com.endregas.warriors.unitytesting.exceptions.DirectoryDoesNotExistException;
 import com.endregas.warriors.unitytesting.exceptions.NoVideosException;
 import com.endregas.warriors.unitytesting.exceptions.VideoNotFoundException;
+import com.endregas.warriors.unitytesting.model.dto.RecentVideoDTO;
 import com.endregas.warriors.unitytesting.services.VideoService;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,11 +64,12 @@ public class VideoServiceImpl implements VideoService {
 
     private String getLastModifiedVideoFile(File videoDirectory) throws VideoNotFoundException {
         List<File> allVideoFiles = getAllVideos(videoDirectory);
-        Optional<String> optionalName = allVideoFiles.stream()
-                .max(Comparator.comparing(File::lastModified))
-                .map(File::getPath);
-        String lastModifiedVideoDirectory =  optionalName.orElseThrow(VideoNotFoundException::new);
-        return lastModifiedVideoDirectory.replaceFirst("src/main/resources/", "");
+        Optional<File> optionalName = allVideoFiles.stream()
+                .max(Comparator.comparing(File::lastModified));
+        File lastModifiedVideo = optionalName.orElseThrow(VideoNotFoundException::new);
+        RecentVideoDTO mostRecentVideo = new RecentVideoDTO(lastModifiedVideo.getName().replaceFirst(".mp4", ""),
+                lastModifiedVideo.getPath().replace('\\', '/').replaceFirst("src/main/resources/", ""));
+        return new Gson().toJson(mostRecentVideo);
     }
 
     private List<File> getAllVideos(File videoDirectory) {

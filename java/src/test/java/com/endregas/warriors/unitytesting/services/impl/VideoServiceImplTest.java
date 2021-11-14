@@ -86,7 +86,7 @@ class VideoServiceImplTest {
         for (int i = 0; i < 1; i++) {
             saveFile(testVideo);
         }
-        assertEquals(VIDEO_DIRECTORY + TEST_VIDEO_NAME, videoService.findMostRecentVideo());
+        assertEquals("{\"name\":\"black screen\",\"src\":\"videos/black screen.mp4\"}", videoService.findMostRecentVideo());
     }
 
     @Test
@@ -96,7 +96,7 @@ class VideoServiceImplTest {
             saveFile(testVideo);
             Thread.sleep(100);
         }
-        assertEquals(VIDEO_DIRECTORY + THIRD_TEST_VIDEO_NAME, videoService.findMostRecentVideo());
+        assertEquals("{\"name\":\"black screen(2)\",\"src\":\"videos/black screen(2).mp4\"}", videoService.findMostRecentVideo());
     }
 
     private void saveFile(MultipartFile file) throws IOException {
