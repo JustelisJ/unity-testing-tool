@@ -25,8 +25,8 @@ public class VideoController {
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/video")
     public ResponseEntity<List<String>> getAllVideos(
-                                            @RequestParam(name = "game") @NotNull @Size(max = 50) String game,
-                                            @RequestParam(name = "build") @NotNull @Size(max = 20) String build) throws NoVideosException {
+            @RequestParam(name = "game") @NotNull @Size(max = 50) String game,
+            @RequestParam(name = "build") @NotNull @Size(max = 20) String build) throws NoVideosException {
         List<String> allVideoNames = videoService.getAllVideosForGameAndBuild(game, build);
         log.info("All videos fetched for {}/{}: {}", game, build, allVideoNames);
         return ResponseEntity.ok().body(allVideoNames);
