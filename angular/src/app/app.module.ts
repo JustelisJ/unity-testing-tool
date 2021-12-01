@@ -13,9 +13,11 @@ import { HomeComponent } from './views/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header/header.component';
+import { GamesComponent } from './views/games/games.component';
+import { PlayrunsComponent } from './views/playruns/playruns.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, HeaderComponent],
+  declarations: [AppComponent, HomeComponent, HeaderComponent, GamesComponent, PlayrunsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

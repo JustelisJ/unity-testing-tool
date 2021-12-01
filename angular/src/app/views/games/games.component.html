@@ -1,0 +1,8 @@
+<div class="container">
+  <h2 class="title">Games list:</h2>
+  <ul class="gameslist" >
+    <li class="listitem" *ngFor="let game of games" (click)="onItemClick(game)">
+      <h2 class="gamestext">{{ game }}</h2>
+    </li>
+  </ul>
+</div>
