@@ -24,14 +24,14 @@ export class PlayrunsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor =
       '#212121';
-    this.videoService.getPlayruns(this.game, this.build);
-    this.videoService.playruns$.subscribe((p) => (this.playruns = p));
-    // this.initDummyData();
-
     this.sub = this.route.params.subscribe((params) => {
       this.game = params.game;
       this.build = params.build;
+      this.videoService.getPlayrunsNames(this.game, this.build);
     });
+
+    this.videoService.playruns$.subscribe((p) => (this.playruns = p));
+    // this.initDummyData();
   }
 
   initDummyData(): void {

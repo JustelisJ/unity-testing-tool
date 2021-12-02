@@ -22,13 +22,15 @@ export class BuildsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor =
       '#212121';
-    this.videoService.getBuilds(this.game);
-    this.videoService.builds$.subscribe((b) => (this.builds = b));
-    // this.initDummyData();
-
     this.sub = this.route.params.subscribe((params) => {
       this.game = params.game;
+      this.videoService.getBuilds(this.game);
     });
+    this.videoService.builds$.subscribe((b) => (this.builds = b));
+
+    // this.initDummyData();
+
+
   }
 
   initDummyData(): void {

@@ -11,8 +11,9 @@ import { PlayRunReport } from '../models/playrun.model';
 })
 export class VideoService {
   private gamesUrl = '/game';
-  private buildsUrl = '/build/';
+  private buildsUrl = '/game/build';
   private playrunUrl = '/playrun/';
+  private playrunNamesUrl = '/video';
   private videoUrl = '/video/recent';
   private bugsUrl = '/bug/';
 
@@ -54,11 +55,34 @@ export class VideoService {
     try {
       const resp = this.http
         .get<string[]>(
-          environment.apiConfig.api_local_url + this.buildsUrl + 'game=' + game
+          environment.apiConfig.api_local_url + this.buildsUrl + '?game=' + game
         )
         .subscribe((data: string[]) => {
           this.builds$.next(data);
           console.log(this.builds$);
+        });
+      return resp;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  public getPlayrunsNames(game: string, playrun: string): any {
+    try {
+      // PlayRunReport[]
+      const resp = this.http
+        .get<string[]>(
+          environment.apiConfig.api_local_url +
+            this.playrunNamesUrl +
+            '?game=' +
+            game +
+            '&playrun=' +
+            playrun
+        )
+        .subscribe((data: string[]) => {
+          this.playruns$.next(data);
+          console.log(this.playruns$);
         });
       return resp;
     } catch (error) {
@@ -74,9 +98,9 @@ export class VideoService {
         .get<string[]>(
           environment.apiConfig.api_local_url +
             this.playrunUrl +
-            'game=' +
+            '?game=' +
             game +
-            '/playrun=' +
+            '&playrun=' +
             playrun
         )
         .subscribe((data: string[]) => {
