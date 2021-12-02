@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 class="title1">{{ id }}</h1>
+  <h1 class="title1">Game: {{ game }}, Build: {{ build }}</h1>
   <h2 class="title2">Playruns list:</h2>
   <ul class="playrunlist">
     <li class="listitem" *ngFor="let playrun of playruns" (click)="onItemClick(playrun)">

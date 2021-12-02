@@ -11,7 +11,8 @@ import { VideoService } from 'src/app/shared/services/video.service';
 export class PlayrunsComponent implements OnInit, OnDestroy {
   playruns: string[]; // PlayRunReport[]
   private sub: any;
-  id: string;
+  game = '';
+  build = '';
 
   constructor(
     private videoService: VideoService,
@@ -24,10 +25,10 @@ export class PlayrunsComponent implements OnInit, OnDestroy {
     // this.videoService.getPlayruns();
     // this.videoService.playruns$.subscribe((p) => (this.playruns = p));
     this.initDummyData();
-    this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor =
-      '#212121';
+    this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = '#212121';
     this.sub = this.route.params.subscribe((params) => {
-      this.id = params.id;
+      this.game = params.game;
+      this.build = params.build;
     });
   }
 
@@ -46,7 +47,7 @@ export class PlayrunsComponent implements OnInit, OnDestroy {
 
   onItemClick(playrun: string): void {
     // this.videoService.getVideo(playrun);
-    this.router.navigate(['/home']);
+    this.router.navigate(['/app-video']);
   }
 
   ngOnDestroy(): void {

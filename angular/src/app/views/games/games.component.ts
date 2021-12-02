@@ -29,7 +29,7 @@ export class GamesComponent implements OnInit {
   }
 
   onItemClick(game: string): void {
-    // this.videoService.getPlayruns(game);
-    this.router.navigate(['/app-playruns', game]);
+    // this.videoService.getBuilds(game);
+    this.router.navigate(['/app-builds', game]);
   }
 }

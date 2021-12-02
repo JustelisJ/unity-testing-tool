@@ -10,17 +10,85 @@ import { PlayRunReport } from '../models/playrun.model';
   providedIn: 'root',
 })
 export class VideoService {
-  private videoUrl = '/video/recent'; // URL to video endpoint
-  private bugsUrl = '/bug/'; // URL to bug endpoint
-  private playrunUrl = '/playrun/'; // URL to playrun endpoint
-  private gamesUrl = '/game'; // URL to games endpoint
+  private gamesUrl = '/game';
+  private buildsUrl = '/build/';
+  private playrunUrl = '/playrun/';
+  private videoUrl = '/video/recent';
+  private bugsUrl = '/bug/';
 
-  public videoName$: BehaviorSubject<VideoObject> = new BehaviorSubject<VideoObject>(null);
-  public bugs$: BehaviorSubject<Bug[]> = new BehaviorSubject<Bug[]>(null);
-  public playruns$: BehaviorSubject<PlayRunReport[]> = new BehaviorSubject<PlayRunReport[]>(null);
-  public games$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(null);
+  public games$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
+    null
+  );
+
+  public builds$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
+    null
+  );
+
+  public playruns$: BehaviorSubject<PlayRunReport[]> = new BehaviorSubject<PlayRunReport[]>(
+    null
+  );
+
+  public videoName$: BehaviorSubject<VideoObject> =
+    new BehaviorSubject<VideoObject>(null);
+
+  public bugs$: BehaviorSubject<Bug[]> =
+    new BehaviorSubject<Bug[]>(null);
 
   constructor(private http: HttpClient) {}
+
+  public getGames(): any {
+    try {
+      const resp = this.http
+        .get<string[]>(environment.apiConfig.api_local_url + this.gamesUrl)
+        .subscribe((data: string[]) => {
+          this.games$.next(data);
+          console.log(this.games$);
+        });
+      return resp;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  public getBuilds(game: string): any {
+    try {
+      const resp = this.http
+        .get<string[]>(
+          environment.apiConfig.api_local_url + this.buildsUrl + 'game=' + game
+        )
+        .subscribe((data: string[]) => {
+          this.builds$.next(data);
+          console.log(this.builds$);
+        });
+      return resp;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  public getPlayruns(game: string, playrun: string): any {
+    try {
+      const resp = this.http
+        .get<PlayRunReport[]>(
+          environment.apiConfig.api_local_url +
+            this.playrunUrl +
+            'game=' +
+            game +
+            '/playrun=' +
+            playrun
+        )
+        .subscribe((data: PlayRunReport[]) => {
+          this.playruns$.next(data);
+          console.log(this.playruns$);
+        });
+      return resp;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 
   public getVideoName(): any {
     try {
@@ -44,38 +112,6 @@ export class VideoService {
         .subscribe((data: Bug[]) => {
           this.bugs$.next(data);
           console.log(this.bugs$);
-        });
-      return resp;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
-
-  public getPlayruns(): any {
-    try {
-      const resp = this.http
-        .get<PlayRunReport[]>(
-          environment.apiConfig.api_local_url + this.playrunUrl
-        )
-        .subscribe((data: PlayRunReport[]) => {
-          this.playruns$.next(data);
-          console.log(this.playruns$);
-        });
-      return resp;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
-
-  public getGames(): any {
-    try {
-      const resp = this.http
-        .get<string[]>(environment.apiConfig.api_local_url + this.gamesUrl)
-        .subscribe((data: string[]) => {
-          this.games$.next(data);
-          console.log(this.games$);
         });
       return resp;
     } catch (error) {

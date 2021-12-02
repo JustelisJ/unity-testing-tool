@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BuildsComponent } from './views/builds/builds.component';
 import { GamesComponent } from './views/games/games.component';
-import { HomeComponent } from './views/home/home.component';
+import { VideoComponent } from './views/video/video.component';
 import { PlayrunsComponent } from './views/playruns/playruns.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/app-games', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'app-playruns/:id', component: PlayrunsComponent },
+  { path: 'app-video', component: VideoComponent },
+  { path: 'app-playruns/:game/:build', component: PlayrunsComponent },
   { path: 'app-games', component: GamesComponent },
+  { path: 'app-builds/:game', component: BuildsComponent },
 ];
 
 @NgModule({

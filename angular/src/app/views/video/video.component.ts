@@ -4,11 +4,11 @@ import { Bug } from '../../shared/models/bug.model';
 import { VideoObject } from 'src/app/shared/models/video.model';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-video',
+  templateUrl: './video.component.html',
+  styleUrls: ['./video.component.scss'],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class VideoComponent implements OnInit, AfterViewInit {
   videoObject: VideoObject = {
     name: '',
     src: '',
@@ -169,14 +169,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   showInfoOnHover(bug: Bug): void {
-    if ( !this.activeBug ) {
+    if (!this.activeBug) {
       this.bugName = bug.bugName;
       this.bugDescription = bug.bugDescription;
     }
   }
 
   clearInfo(): void {
-    if ( !this.activeBug ) {
+    if (!this.activeBug) {
       this.bugName = '';
       this.bugDescription = '';
     }
