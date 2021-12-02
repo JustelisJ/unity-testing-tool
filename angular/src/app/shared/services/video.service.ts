@@ -19,20 +19,19 @@ export class VideoService {
   public games$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
     null
   );
-
+  // BuildReport[]
   public builds$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
     null
   );
-
-  public playruns$: BehaviorSubject<PlayRunReport[]> = new BehaviorSubject<PlayRunReport[]>(
+  // PlayRunReport[]
+  public playruns$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
     null
   );
 
   public videoName$: BehaviorSubject<VideoObject> =
     new BehaviorSubject<VideoObject>(null);
 
-  public bugs$: BehaviorSubject<Bug[]> =
-    new BehaviorSubject<Bug[]>(null);
+  public bugs$: BehaviorSubject<Bug[]> = new BehaviorSubject<Bug[]>(null);
 
   constructor(private http: HttpClient) {}
 
@@ -70,8 +69,9 @@ export class VideoService {
 
   public getPlayruns(game: string, playrun: string): any {
     try {
+      // PlayRunReport[]
       const resp = this.http
-        .get<PlayRunReport[]>(
+        .get<string[]>(
           environment.apiConfig.api_local_url +
             this.playrunUrl +
             'game=' +
@@ -79,7 +79,7 @@ export class VideoService {
             '/playrun=' +
             playrun
         )
-        .subscribe((data: PlayRunReport[]) => {
+        .subscribe((data: string[]) => {
           this.playruns$.next(data);
           console.log(this.playruns$);
         });

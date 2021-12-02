@@ -17,11 +17,11 @@ export class GamesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.videoService.getGames();
-    // this.videoService.games$.subscribe((g) => (this.games = g));
-    this.initDummyData();
     this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor =
       '#212121';
+    this.videoService.getGames();
+    this.videoService.games$.subscribe((g) => (this.games = g));
+    // this.initDummyData();
   }
 
   initDummyData(): void {
@@ -29,7 +29,7 @@ export class GamesComponent implements OnInit {
   }
 
   onItemClick(game: string): void {
-    // this.videoService.getBuilds(game);
+    this.videoService.getBuilds(game);
     this.router.navigate(['/app-builds', game]);
   }
 }

@@ -20,11 +20,12 @@ export class BuildsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // this.videoService.getBuilds();
-    // this.videoService.builds$.subscribe((b) => (this.builds = b));
-    this.initDummyData();
     this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor =
       '#212121';
+    this.videoService.getBuilds(this.game);
+    this.videoService.builds$.subscribe((b) => (this.builds = b));
+    // this.initDummyData();
+
     this.sub = this.route.params.subscribe((params) => {
       this.game = params.game;
     });
@@ -44,7 +45,7 @@ export class BuildsComponent implements OnInit, OnDestroy {
   }
 
   onItemClick(build: string): void {
-    // this.videoService.getPlayruns(this.game, build);
+    this.videoService.getPlayruns(this.game, build);
     this.router.navigate(['/app-playruns', this.game, build]);
   }
 
