@@ -9,13 +9,16 @@ import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { VideoService } from './shared/services/video.service';
-import { HomeComponent } from './views/home/home.component';
+import { VideoComponent } from './views/video/video.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header/header.component';
+import { GamesComponent } from './views/games/games.component';
+import { PlayrunsComponent } from './views/playruns/playruns.component';
+import { BuildsComponent } from './views/builds/builds.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, HeaderComponent],
+  declarations: [AppComponent, VideoComponent, HeaderComponent, GamesComponent, PlayrunsComponent, BuildsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -1,0 +1,14 @@
+<div class="container">
+  <h1 class="title1">Game: {{ game }}, Build: {{ build }}</h1>
+  <h2 class="title2">Playruns list:</h2>
+  <ng-container *ngIf="playruns && playruns.length > 0">
+    <ul class="playrunlist">
+      <li class="listitem" *ngFor="let playrun of playruns" (click)="onItemClick(playrun)">
+        <h2 class="playruntext">{{ playrun }}</h2>
+      </li>
+    </ul>
+  </ng-container>
+  <ng-container *ngIf="playruns === undefined || playruns === null || playruns.length < 1">
+    <h2 class="error-message"> No playruns found for this build.</h2>
+  </ng-container>
+</div>

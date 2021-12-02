@@ -4,11 +4,11 @@ import { Bug } from '../../shared/models/bug.model';
 import { VideoObject } from 'src/app/shared/models/video.model';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-video',
+  templateUrl: './video.component.html',
+  styleUrls: ['./video.component.scss'],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class VideoComponent implements OnInit, AfterViewInit {
   videoObject: VideoObject = {
     name: '',
     src: '',
@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   hoverEvent: string;
   bugName = '';
   bugDescription = '';
+  activeBug = false;
 
   constructor(
     private videoService: VideoService,
@@ -39,6 +40,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    this.activeBug = false;
     this.videoService.getVideoName();
     this.videoService.videoName$.subscribe((v) => {
       this.videoObject = v;
@@ -53,17 +55,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.currentVideo = this.videoItems[this.activeIndex];
       console.log(this.videoItems);
     });
-    this.bugsInit();
     this.randColorPick();
-    // this.videoService.bugs$.subscribe((b) => {
-    // this.bugs = b;
-    // this.bugsInit();
-    // });
+    this.videoService.bugs$.subscribe((b) => {
+      this.bugs = b;
+      console.log(this.bugs);
+    });
   }
 
   ngAfterViewInit(): void {
     this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor =
-      '#212121'; // D9D8DA
+      '#212121';
   }
 
   videoPlayerInit(data: any): void {
@@ -111,19 +112,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
           end: 190,
         },
       },
-      {
-        bugName: 'test bug 5',
-        bugDescription: 'test description 5',
-        timeVideoReference: {
-          start: 220,
-          end: 280,
-        },
-      },
     ];
     this.bugs = dummyBugs;
   }
 
   refreshLatestVideo(): void {
+    this.activeBug = false;
     this.videoService.getVideoName();
     this.currentVideo = this.videoItems[this.activeIndex];
   }
@@ -136,14 +130,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   //   }
 
   //   this.currentVideo = this.videoItems[this.activeIndex];
-
-  //   const video = document.createElement('video');
-  //   video.preload = 'metadata';
-
-  //   video.onloadedmetadata = () => {
-  //     window.URL.revokeObjectURL(this.currentVideo.src);
-  //     this.duration = video.duration;
-  //   };
   // }
 
   initVdo(): void {
@@ -175,13 +161,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  showInfoOnHover(bug: Bug): void {
+  showBugInfoOnClick(bug: Bug): void {
+    this.activeBug = true;
     this.bugName = bug.bugName;
     this.bugDescription = bug.bugDescription;
+    this.data.getDefaultMedia().currentTime = bug.timeVideoReference.start;
+  }
+
+  showInfoOnHover(bug: Bug): void {
+    if (!this.activeBug) {
+      this.bugName = bug.bugName;
+      this.bugDescription = bug.bugDescription;
+    }
   }
 
   clearInfo(): void {
-    this.bugName = '';
-    this.bugDescription = '';
+    if (!this.activeBug) {
+      this.bugName = '';
+      this.bugDescription = '';
+    }
   }
 }

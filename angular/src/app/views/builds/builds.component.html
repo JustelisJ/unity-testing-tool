@@ -1,0 +1,9 @@
+<div class="container">
+  <h1 class="title1">Game: {{ game }}</h1>
+  <h2 class="title2">Builds list:</h2>
+  <ul class="buildlist">
+    <li class="listitem" *ngFor="let build of builds" (click)="onItemClick(build)">
+      <h2 class="buildtext">{{ build }}</h2>
+    </li>
+  </ul>
+</div>

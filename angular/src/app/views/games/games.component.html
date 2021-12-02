@@ -1,0 +1,13 @@
+<div class="container">
+  <h2 class="title">Games list:</h2>
+  <ng-container *ngIf="games && games.length > 0">
+    <ul class="gameslist" >
+      <li class="listitem" *ngFor="let game of games" (click)="onItemClick(game)">
+        <h2 class="gamestext">{{ game }}</h2>
+      </li>
+    </ul>
+  </ng-container>
+  <ng-container *ngIf="games === undefined || games === null || games.length < 1">
+    <h2 class="error-message">There are no games registered yet.</h2>
+  </ng-container>
+</div>

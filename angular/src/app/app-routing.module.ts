@@ -1,10 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './views/home/home.component';
+import { BuildsComponent } from './views/builds/builds.component';
+import { GamesComponent } from './views/games/games.component';
+import { VideoComponent } from './views/video/video.component';
+import { PlayrunsComponent } from './views/playruns/playruns.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/app-games', pathMatch: 'full' },
+  { path: 'app-video', component: VideoComponent },
+  { path: 'app-playruns/:game/:build', component: PlayrunsComponent },
+  { path: 'app-games', component: GamesComponent },
+  { path: 'app-builds/:game', component: BuildsComponent },
 ];
 
 @NgModule({
