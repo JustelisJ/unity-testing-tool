@@ -2,6 +2,8 @@ import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { VideoService } from '../../shared/services/video.service';
 import { Bug } from '../../shared/models/bug.model';
 import { VideoObject } from 'src/app/shared/models/video.model';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-video',
@@ -15,6 +17,10 @@ export class VideoComponent implements OnInit, AfterViewInit {
   };
   bugs: Bug[] = [];
   colors: string[] = [];
+  private sub: any;
+  game = '';
+  videoName = '';
+  build = '';
 
   videoItems = [
     {
@@ -36,25 +42,46 @@ export class VideoComponent implements OnInit, AfterViewInit {
 
   constructor(
     private videoService: VideoService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.activeBug = false;
-    this.videoService.getVideoName();
-    this.videoService.videoName$.subscribe((v) => {
-      this.videoObject = v;
-      console.log(this.videoObject);
+    this.sub = this.route.params.subscribe((params) => {
+      this.game = params.game;
+      this.build = params.build;
+      this.videoName = params.playrun;
       this.videoItems = [
         {
-          name: this.videoObject?.name,
-          src: 'assets/' + this.videoObject?.src,
+          name: this.videoName,
+          src:
+            'assets/videos/' +
+            this.game +
+            '/' +
+            this.build +
+            '/' +
+            this.videoName,
           type: 'video/mp4',
         },
       ];
       this.currentVideo = this.videoItems[this.activeIndex];
       console.log(this.videoItems);
     });
+    this.activeBug = false;
+    // this.videoService.getVideoName();
+    // this.videoService.videoName$.subscribe((v) => {
+    //   this.videoObject = v;
+    //   console.log(this.videoObject);
+      // this.videoItems = [
+      //   {
+      //     name: this.videoObject?.name,
+      //     src: 'assets/' + this.videoObject?.src,
+      //     type: 'video/mp4',
+      //   },
+      // ];
+      // this.currentVideo = this.videoItems[this.activeIndex];
+      // console.log(this.videoItems);
+    // });
     this.randColorPick();
     this.videoService.bugs$.subscribe((b) => {
       this.bugs = b;
