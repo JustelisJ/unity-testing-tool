@@ -14,6 +14,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=password
       - CUSTOM_HTTP_MAX_FILE_SIZE=9000MB
       - CUSTOM_HTTP_MAX_REQUEST_SIZE=9050MB
+      - SPRING_PROFILES_ACTIVE=local
     volumes:
       - .\videos:/app/src/main/resources/videos
 
