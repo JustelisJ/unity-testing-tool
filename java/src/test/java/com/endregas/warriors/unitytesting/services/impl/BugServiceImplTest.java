@@ -2,6 +2,7 @@ package com.endregas.warriors.unitytesting.services.impl;
 
 import com.endregas.warriors.unitytesting.model.database.BugReport;
 import com.endregas.warriors.unitytesting.model.dto.BugReportDTO;
+import com.endregas.warriors.unitytesting.model.utils.TimeInterval;
 import com.endregas.warriors.unitytesting.repositories.BugRepository;
 import com.endregas.warriors.unitytesting.services.BugService;
 import org.junit.jupiter.api.Test;
@@ -21,8 +22,8 @@ class BugServiceImplTest {
 
     @Test
     void reportABug() {
-        BugReportDTO bugReport = new BugReportDTO("Game name", "1", "1", 1L, "Notes");
-        assertEquals(bugReport, bugService.reportABug(bugReport));
+        BugReportDTO bugReport = new BugReportDTO("asd", "asd", new TimeInterval(1.4, 4.4));
+        bugService.reportBugs("game", "build", "run", List.of(bugReport));
         verify(bugRepository, times(1)).save(any());
     }
 
@@ -30,20 +31,21 @@ class BugServiceImplTest {
     void getBugsForARun() {
         BugReport bugReport = BugReport.builder()
                 .timestamp(LocalDate.now())
-                .game("Game name")
-                .build("1")
-                .runId("1")
-                .time(1L)
-                .notes("Notes")
+                .game("Awesome game")
+                .build("1.0")
+                .playRun("asd")
+                .fromSec(10.4)
+                .toSec(15.4)
+                .bugName("Player twitches")
+                .bugDescription("idk")
                 .build();
         BugReportDTO bugReportDTO = bugReport.convertToDTO();
-        when(bugRepository.findAllByGameAndBuildAndRunId(anyString(), anyString(), anyString())).thenReturn(List.of(bugReport));
+        when(bugRepository.findAllByGameAndBuildAndPlayRun(anyString(), anyString(), anyString())).thenReturn(List.of(bugReport));
         List<BugReportDTO> result = bugService.getBugsForARun("Game name", "1", "1");
         assertEquals(List.of(bugReportDTO).size(), result.size());
-        assertEquals(bugReportDTO.getGame(), result.get(0).getGame());
-        assertEquals(bugReportDTO.getBuild(), result.get(0).getBuild());
-        assertEquals(bugReportDTO.getRunId(), result.get(0).getRunId());
-        assertEquals(bugReportDTO.getNotes(), result.get(0).getNotes());
-        assertEquals(bugReportDTO.getTime(), result.get(0).getTime());
+        assertEquals(bugReportDTO.getBugName(), result.get(0).getBugName());
+        assertEquals(bugReportDTO.getBugDescription(), result.get(0).getBugDescription());
+        assertEquals(bugReportDTO.getTimeVideoReference().getFrom(), result.get(0).getTimeVideoReference().getFrom());
+        assertEquals(bugReportDTO.getTimeVideoReference().getTo(), result.get(0).getTimeVideoReference().getTo());
     }
 }

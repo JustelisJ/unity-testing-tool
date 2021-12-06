@@ -1,11 +1,12 @@
 package com.endregas.warriors.unitytesting.services.impl;
 
-import com.endregas.warriors.unitytesting.exceptions.DirectoryDoesNotExistException;
 import com.endregas.warriors.unitytesting.exceptions.NoVideosException;
 import com.endregas.warriors.unitytesting.exceptions.VideoNotFoundException;
 import com.endregas.warriors.unitytesting.model.dto.RecentVideoDTO;
 import com.endregas.warriors.unitytesting.services.VideoService;
+import com.endregas.warriors.unitytesting.utils.CommonValidations;
 import com.google.gson.Gson;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,16 +18,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class VideoServiceImpl implements VideoService {
 
     public static final String VIDEO_DIRECTORY = "src/main/resources/videos/";
     public static final int INITIAL_POSTFIX = 1;
     public static final String SLASH = "/";
 
+    final CommonValidations commonValidations;
+
     @Override
     public List<String> getAllVideosForGameAndBuild(String game, String build) throws NoVideosException {
         File buildDirectory = new File(VIDEO_DIRECTORY + game + SLASH + build + SLASH);
-        validateDirectoriesExist(buildDirectory);
+        commonValidations.validateDirectoriesExist(buildDirectory);
         File[] allFiles = buildDirectory.listFiles();
         if (allFiles != null) {
             return Arrays.stream(allFiles)
@@ -40,26 +44,15 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public void saveVideo(MultipartFile file, String game, String build) throws IOException {
-        File directory = validateThatGameBuildDirectoryExists(game, build);
+        File directory = commonValidations.validateThatGameBuildDirectoryExists(game, build);
         saveFile(directory, file);
     }
 
     @Override
     public String findMostRecentVideo() throws NoVideosException, VideoNotFoundException {
         File videoDirectory = new File(VIDEO_DIRECTORY);
-        validateDirectoriesExist(videoDirectory);
+        commonValidations.validateDirectoriesExist(videoDirectory);
         return getLastModifiedVideoFile(videoDirectory);
-    }
-
-    private void validateDirectoriesExist(File videoDirectory) throws NoVideosException {
-        if (!videoDirectory.exists()) {
-            videoDirectory.mkdirs();
-            throw new NoVideosException();
-        }
-        File[] allFiles = videoDirectory.listFiles();
-        if (allFiles == null) {
-            throw new NoVideosException();
-        }
     }
 
     private String getLastModifiedVideoFile(File videoDirectory) throws VideoNotFoundException {
@@ -105,14 +98,6 @@ public class VideoServiceImpl implements VideoService {
                 out.write(buffer, 0, len);
             }
         }
-    }
-
-    private File validateThatGameBuildDirectoryExists(String game, String build) throws DirectoryDoesNotExistException {
-        File directory = new File(VIDEO_DIRECTORY + game + SLASH + build + SLASH);
-        if (!directory.exists()) {
-            throw new DirectoryDoesNotExistException(game, build);
-        }
-        return directory;
     }
 
     private File addSuffix(File convertFile, int suffix) throws IOException {
