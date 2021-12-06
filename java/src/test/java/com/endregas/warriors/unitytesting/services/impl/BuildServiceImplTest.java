@@ -3,6 +3,7 @@ package com.endregas.warriors.unitytesting.services.impl;
 import com.endregas.warriors.unitytesting.exceptions.DirectoryDoesNotExistException;
 import com.endregas.warriors.unitytesting.services.BuildService;
 import com.endregas.warriors.unitytesting.services.GameService;
+import com.endregas.warriors.unitytesting.utils.CommonValidations;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class BuildServiceImplTest {
 
@@ -20,7 +25,9 @@ class BuildServiceImplTest {
     private static final String SLASH = "/";
     public static final String GAME_NAME = "testGame";
 
-    BuildService buildService = new BuildServiceImpl();
+    CommonValidations commonValidations = mock(CommonValidations.class);
+
+    BuildService buildService = new BuildServiceImpl(commonValidations);
 
     @BeforeEach
     void setup() throws DirectoryDoesNotExistException {
@@ -28,6 +35,10 @@ class BuildServiceImplTest {
         File videoDirectory = new File(VIDEO_DIRECTORY);
         gameService.createNewGameDirectory(GAME_NAME);
         videoDirectory.mkdirs();
+
+        //mockito mocks
+        File gameDirectory = new File(VIDEO_DIRECTORY + GAME_NAME + SLASH);
+        when(commonValidations.validateThatGameDirectoryExists(anyString())).thenReturn(gameDirectory);
     }
 
     @AfterEach

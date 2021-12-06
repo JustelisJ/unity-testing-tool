@@ -1,14 +1,12 @@
 package com.endregas.warriors.unitytesting.model.database;
 
 import com.endregas.warriors.unitytesting.model.dto.BugReportDTO;
+import com.endregas.warriors.unitytesting.model.utils.TimeInterval;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Builder
@@ -19,16 +17,19 @@ public class BugReport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private Long id;
     private String game;
     private String build;
-    private String runId;
+    private String playRun;
     private LocalDate timestamp;
-    private long time;
-    private String notes;
+    private String bugName;
+    @Column(columnDefinition="TEXT")
+    private String bugDescription;
+    private Double fromSec;
+    private Double toSec;
 
     public BugReportDTO convertToDTO() {
-        return new BugReportDTO(game, build, runId, time, notes);
+        return new BugReportDTO(bugName, bugDescription, new TimeInterval(fromSec, toSec));
     }
 
 }

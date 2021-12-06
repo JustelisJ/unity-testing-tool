@@ -6,8 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 
-public interface BugRepository extends CrudRepository<BugReport, String> {
+public interface BugRepository extends CrudRepository<BugReport, Long> {
 
-    List<BugReport> findAllByGameAndBuildAndRunId(String game, String build, String runId);
+    List<BugReport> findAllByGameAndBuildAndPlayRun(String game, String build, String playrun);
 
 }
