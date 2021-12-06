@@ -1,9 +1,12 @@
 package com.endregas.warriors.unitytesting.bootup;
 
+import com.endregas.warriors.unitytesting.exceptions.DuplicatePlayRunReportException;
 import com.endregas.warriors.unitytesting.model.dto.BugReportDTO;
-import com.endregas.warriors.unitytesting.services.BugService;
+import com.endregas.warriors.unitytesting.model.dto.PlayRunReportDTO;
+import com.endregas.warriors.unitytesting.model.utils.TimeInterval;
 import com.endregas.warriors.unitytesting.services.BuildService;
 import com.endregas.warriors.unitytesting.services.GameService;
+import com.endregas.warriors.unitytesting.services.PlayRunService;
 import com.endregas.warriors.unitytesting.services.VideoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +19,11 @@ import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
-@Profile("local")
+@Profile("test")
 @Slf4j
 public class DataInitialization {
 
@@ -36,10 +40,10 @@ public class DataInitialization {
     GameService gameService;
     BuildService buildService;
     VideoService videoService;
-    BugService bugService;
+    PlayRunService playRunService;
 
     @PostConstruct
-    public void initializeTestData() throws IOException {
+    public void initializeTestData() throws IOException, DuplicatePlayRunReportException {
         log.info("Initializing test data");
         //Make 3 games
         gameService.createNewGameDirectory(GAME_1);
@@ -53,22 +57,35 @@ public class DataInitialization {
         buildService.createNewBuildInGameDirectory(GAME_2, BUILD_TEST);
 
         InputStream videoFileByteStream = new FileInputStream("src/test/resources/videos/FunGame/1.0/black screen.mp4");
-        MultipartFile testVideo = new MockMultipartFile("black screen.mp4", "black screen.mp4", "video/mp4", videoFileByteStream);
+        MultipartFile testVideo = new MockMultipartFile(VIDEO_NAME + ".mp4", VIDEO_NAME + ".mp4", "video/mp4", videoFileByteStream);
 
         //Add videos to all build directories
         videoService.saveVideo(testVideo, GAME_1, BUILD_10);
         videoService.saveVideo(testVideo, GAME_1, BUILD_20);
         videoService.saveVideo(testVideo, GAME_2, BUILD_TEST);
 
-        //Add bugs to videos
-        bugService.reportABug(new BugReportDTO(GAME_1, BUILD_10, VIDEO_NAME, 5L, BUG_NOTES_1));
-        bugService.reportABug(new BugReportDTO(GAME_1, BUILD_10, VIDEO_NAME, 30L, BUG_NOTES_2));
-
-        bugService.reportABug(new BugReportDTO(GAME_1, BUILD_20, VIDEO_NAME, 5L, BUG_NOTES_1));
-        bugService.reportABug(new BugReportDTO(GAME_1, BUILD_20, VIDEO_NAME, 30L, BUG_NOTES_2));
-
-        bugService.reportABug(new BugReportDTO(GAME_2, BUILD_TEST, VIDEO_NAME, 5L, BUG_NOTES_1));
-        bugService.reportABug(new BugReportDTO(GAME_2, BUILD_TEST, VIDEO_NAME, 30L, BUG_NOTES_2));
+        //Add reports to videos
+        BugReportDTO bugReport1 = new BugReportDTO("first bug", "something happened", new TimeInterval(2.34, 6.34));
+        BugReportDTO bugReport2 = new BugReportDTO("second bug", "something else happened", new TimeInterval(10, 20));
+        BugReportDTO bugReport3 = new BugReportDTO("third bug", "something happened", new TimeInterval(5, 12));
+        playRunService.saveReport(PlayRunReportDTO.builder()
+                .gameRef(GAME_1)
+                .buildRef(BUILD_10)
+                .videoRef(VIDEO_NAME)
+                .bugs(List.of(bugReport1))
+                .build());
+        playRunService.saveReport(PlayRunReportDTO.builder()
+                .gameRef(GAME_1)
+                .buildRef(BUILD_20)
+                .videoRef(VIDEO_NAME)
+                .bugs(List.of(bugReport1, bugReport3))
+                .build());
+        playRunService.saveReport(PlayRunReportDTO.builder()
+                .gameRef(GAME_2)
+                .buildRef(BUILD_TEST)
+                .videoRef(VIDEO_NAME)
+                .bugs(List.of(bugReport1, bugReport2, bugReport3))
+                .build());
     }
 
 }
