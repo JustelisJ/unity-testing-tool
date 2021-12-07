@@ -7,7 +7,7 @@ import { PlayrunsComponent } from './views/playruns/playruns.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/app-games', pathMatch: 'full' },
-  { path: 'app-video/:playrun/:build/:game', component: VideoComponent },
+  { path: 'app-video/:playrun', component: VideoComponent },
   { path: 'app-playruns/:game/:build', component: PlayrunsComponent },
   { path: 'app-games', component: GamesComponent },
   { path: 'app-builds/:game', component: BuildsComponent },

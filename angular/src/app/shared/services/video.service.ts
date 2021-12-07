@@ -68,17 +68,16 @@ export class VideoService {
     }
   }
 
-  public getPlayrunsNames(game: string, playrun: string): any {
+  public getPlayrunsNames(game: string, build: string): any {
     try {
-      // PlayRunReport[]
       const resp = this.http
         .get<string[]>(
           environment.apiConfig.api_local_url +
             this.playrunNamesUrl +
             '?game=' +
             game +
-            '&playrun=' +
-            playrun
+            '&build=' +
+            build
         )
         .subscribe((data: string[]) => {
           this.playruns$.next(data);

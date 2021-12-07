@@ -51,6 +51,8 @@ export class VideoComponent implements OnInit, AfterViewInit {
       this.game = params.game;
       this.build = params.build;
       this.videoName = params.playrun;
+      console.log(params);
+
       this.videoItems = [
         {
           name: this.videoName,

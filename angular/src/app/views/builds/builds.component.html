@@ -1,9 +1,19 @@
 <div class="container">
   <h1 class="title1">Game: {{ game }}</h1>
   <h2 class="title2">Builds list:</h2>
-  <ul class="buildlist">
-    <li class="listitem" *ngFor="let build of builds" (click)="onItemClick(build)">
-      <h2 class="buildtext">{{ build }}</h2>
+  <!-- <ul class="buildlist">
+    <li class="listitem" *ngFor="let build of builds" (click)="onItemClick(build)" >
+      <h2 class="buildtext">{{ build }} <span class="only-hover">{{ build }}</span></h2>
     </li>
-  </ul>
+  </ul> -->
+
+  <div class="build-report-div" *ngFor="let build of buildReports"
+  (click)="ele.class = ele.class == 'showChildren' ? '' :  'showChildren'"
+  [ngClass]="{ hideChildren : ele.class !== 'showChildren' }" #ele>
+    <h2>{{ build.buildId }}</h2>
+    <div class="extended-info"> Average playtime: {{ build.averagePlayTime }}, No. of bugs: {{ build.totalNumberofBugs }}, Avg. bugs per playrun: {{ build.averageNumberOfBugsPerPlayrun }}, Checkpoints passed: {{ build.checkpointsPassed }}</div>
+    <div class="playruns-button">
+      <button mat-button class="see-playruns" (click)="onItemClick(build.buildId)">See Playruns</button>
+    </div>
+  </div>
 </div>
