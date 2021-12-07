@@ -4,6 +4,7 @@ import { Bug } from '../../shared/models/bug.model';
 import { VideoObject } from 'src/app/shared/models/video.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { PlayRunReport } from '../../shared/models/playrun.model';
 
 @Component({
   selector: 'app-video',
@@ -15,6 +16,7 @@ export class VideoComponent implements OnInit, AfterViewInit {
     name: '',
     src: '',
   };
+  playrunReport: PlayRunReport;
   bugs: Bug[] = [];
   colors: string[] = [];
   private sub: any;
@@ -52,6 +54,10 @@ export class VideoComponent implements OnInit, AfterViewInit {
       this.build = params.build;
       this.videoName = params.playrun;
       console.log(params);
+      this.videoService.playrunReport$.subscribe((p) => {
+        this.playrunReport = p;
+        console.log(this.playrunReport);
+      });
 
       this.videoItems = [
         {

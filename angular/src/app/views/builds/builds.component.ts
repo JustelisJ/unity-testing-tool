@@ -13,7 +13,6 @@ export class BuildsComponent implements OnInit, OnDestroy {
   buildReports: BuildReport[] = [];
   private sub: any;
   game: string;
-  hovered = false;
 
   constructor(
     private videoService: VideoService,
@@ -27,7 +26,7 @@ export class BuildsComponent implements OnInit, OnDestroy {
       '#212121';
     this.sub = this.route.params.subscribe((params) => {
       this.game = params.game;
-      // this.videoService.getBuilds(this.game);
+      this.videoService.getBuilds(this.game);
     });
     this.videoService.builds$.subscribe((b) => (this.builds = b));
 
@@ -39,9 +38,7 @@ export class BuildsComponent implements OnInit, OnDestroy {
       'build1',
       'build2',
       'build3',
-      'build4',
-      'build5',
-      'build6'
+      'build4'
     ];
 
     this.buildReports.push({
@@ -63,18 +60,9 @@ export class BuildsComponent implements OnInit, OnDestroy {
   }
 
   onItemClick(build: string): void {
-    this.videoService.getPlayruns(this.game, build);
+    this.videoService.getPlayrunsNames(this.game, build);
     console.log(this.game, build);
-
     this.router.navigate(['/app-playruns', this.game, build]);
-  }
-
-  onHover(): void {
-    this.hovered = true;
-  }
-
-  onLeave(): void {
-    this.hovered = false;
   }
 
   ngOnDestroy(): void {

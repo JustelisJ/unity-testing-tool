@@ -24,8 +24,12 @@ export class VideoService {
   public builds$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
     null
   );
-  // PlayRunReport[]
+
   public playruns$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
+    null
+  );
+
+  public playrunReport$: BehaviorSubject<PlayRunReport> = new BehaviorSubject<PlayRunReport>(
     null
   );
 
@@ -90,21 +94,22 @@ export class VideoService {
     }
   }
 
-  public getPlayruns(game: string, playrun: string): any {
+  public getPlayrunReport(game: string, build: string, playrun: string): any {
     try {
-      // PlayRunReport[]
       const resp = this.http
-        .get<string[]>(
+        .get<PlayRunReport>(
           environment.apiConfig.api_local_url +
-            this.playrunUrl +
-            '?game=' +
-            game +
-            '&playrun=' +
-            playrun
+          this.playrunUrl +
+          '?game=' +
+          game +
+          '&build=' +
+          build +
+          '&playrun=' +
+          playrun
         )
-        .subscribe((data: string[]) => {
-          this.playruns$.next(data);
-          console.log(this.playruns$);
+        .subscribe((data: PlayRunReport) => {
+          this.playrunReport$.next(data);
+          console.log(this.playrunReport$);
         });
       return resp;
     } catch (error) {
@@ -128,10 +133,19 @@ export class VideoService {
     }
   }
 
-  public getBugs(): any {
+  public getBugs(game: string, build: string, playrun: string): any {
     try {
       const resp = this.http
-        .get<Bug[]>(environment.apiConfig.api_local_url + this.bugsUrl)
+        .get<Bug[]>(
+          environment.apiConfig.api_local_url +
+            this.bugsUrl +
+            '?game=' +
+            game +
+            '&build=' +
+            build +
+            '&playrun=' +
+            playrun
+        )
         .subscribe((data: Bug[]) => {
           this.bugs$.next(data);
           console.log(this.bugs$);

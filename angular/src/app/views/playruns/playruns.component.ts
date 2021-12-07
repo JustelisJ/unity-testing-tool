@@ -48,7 +48,7 @@ export class PlayrunsComponent implements OnInit, OnDestroy {
   }
 
   onItemClick(playrun: string): void {
-    // this.videoService.getVideo(playrun);
+    this.videoService.getPlayrunReport(this.game, this.build, playrun);
     this.router.navigate(['/app-video', playrun]);
   }
 

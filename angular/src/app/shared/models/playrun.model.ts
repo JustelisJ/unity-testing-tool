@@ -1,12 +1,11 @@
 import { Bug, TimeInterval } from './bug.model';
 
 export interface PlayRunReport {
+  gameRef: string;
   buildRef: string;
   videoRef: string;
-  levelData: LevelData[];
   bugReport: Bug[];
-  survey: string; // not final
-  gameRef: string;
+  // levelData: LevelData[];
 }
 
 export interface LevelData {
