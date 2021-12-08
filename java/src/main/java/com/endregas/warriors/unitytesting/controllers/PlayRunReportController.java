@@ -19,17 +19,17 @@ public class PlayRunReportController {
     private final PlayRunService playRunService;
 
     @CrossOrigin(origins = "*")
-    @PostMapping(value = "/playRunReport")
+    @PostMapping(value = "/playrun")
     public ResponseEntity<String> savePlayRunReport(@RequestBody @NotNull PlayRunReportDTO report) throws DirectoryDoesNotExistException, DuplicatePlayRunReportException {
         playRunService.saveReport(report);
         return ResponseEntity.ok().body("Report uploaded successfully");
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping(value = "/playRunReport",
+    @GetMapping(value = "/playrun",
             produces = "application/json")
-    public ResponseEntity<PlayRunReportDTO> getVideoReport(String game, String build, String playRun) throws DirectoryDoesNotExistException {
-        return ResponseEntity.ok().body(playRunService.getReport(game, build, playRun));
+    public ResponseEntity<PlayRunReportDTO> getVideoReport(String game, String build, String playrun) throws DirectoryDoesNotExistException {
+        return ResponseEntity.ok().body(playRunService.getReport(game, build, playrun));
     }
 
 }
