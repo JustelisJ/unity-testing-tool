@@ -7,13 +7,13 @@
     </li>
   </ul> -->
 
-  <div class="build-report-div" *ngFor="let build of buildReports"
+  <div class="build-report-div" *ngFor="let build of builds"
   (click)="ele.class = ele.class == 'showChildren' ? '' :  'showChildren'"
   [ngClass]="{ hideChildren : ele.class !== 'showChildren' }" #ele>
-    <h2>{{ build.buildId }}</h2>
-    <div class="extended-info"> Average playtime: {{ build.averagePlayTime }}, No. of bugs: {{ build.totalNumberofBugs }}, Avg. bugs per playrun: {{ build.averageNumberOfBugsPerPlayrun }}</div>
+    <h2>{{ build }}</h2>
+    <!-- <div class="extended-info"> Average playtime: {{ build.averagePlayTime }}, No. of bugs: {{ build.totalNumberofBugs }}, Avg. bugs per playrun: {{ build.averageNumberOfBugsPerPlayrun }}</div> -->
     <div class="playruns-button">
-      <button mat-button class="see-playruns" (click)="onItemClick(build.buildId)">See Playruns</button>
+      <button mat-button class="see-playruns" (click)="onItemClick(build)">See Playruns</button>
     </div>
   </div>
 </div>
