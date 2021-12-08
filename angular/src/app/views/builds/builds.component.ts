@@ -30,7 +30,7 @@ export class BuildsComponent implements OnInit, OnDestroy {
     });
     this.videoService.builds$.subscribe((b) => (this.builds = b));
 
-    this.initDummyData();
+    // this.initDummyData();
   }
 
   initDummyData(): void {
@@ -41,7 +41,7 @@ export class BuildsComponent implements OnInit, OnDestroy {
       buildId: 'testBuild1',
       averagePlayTime: 1,
       totalNumberofBugs: 2,
-      averageNumberOfBugsPerPlayrun: 3
+      averageNumberOfBugsPerPlayrun: 3,
     });
     this.buildReports.push({
       game: 'test2',

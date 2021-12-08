@@ -31,7 +31,7 @@ export class PlayrunsComponent implements OnInit, OnDestroy {
     });
 
     this.videoService.playruns$.subscribe((p) => (this.playruns = p));
-    this.initDummyData();
+    // this.initDummyData();
   }
 
   initDummyData(): void {
