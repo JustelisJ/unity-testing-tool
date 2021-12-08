@@ -57,46 +57,25 @@ export class VideoComponent implements OnInit, AfterViewInit {
       this.videoService.playrunReport$.subscribe((p) => {
         this.playrunReport = p;
         console.log(this.playrunReport);
+        this.videoItems = [
+          {
+            name: this.videoName,
+            src:
+              'assets/videos/' +
+              this.game +
+              '/' +
+              this.build +
+              '/' +
+              this.videoName,
+            type: 'video/mp4',
+          },
+        ];
+        this.currentVideo = this.videoItems[this.activeIndex];
       });
-
-      this.videoItems = [
-        {
-          name: this.videoName,
-          src:
-            'assets/videos/' +
-            this.game +
-            '/' +
-            this.build +
-            '/' +
-            this.videoName,
-          type: 'video/mp4',
-        },
-      ];
-      this.currentVideo = this.videoItems[this.activeIndex];
       console.log(this.videoItems);
+      this.randColorPick();
     });
     this.activeBug = false;
-
-    // this.videoService.getVideoName();
-    // this.videoService.videoName$.subscribe((v) => {
-    //   this.videoObject = v;
-    //   console.log(this.videoObject);
-      // this.videoItems = [
-      //   {
-      //     name: this.videoObject?.name,
-      //     src: 'assets/' + this.videoObject?.src,
-      //     type: 'video/mp4',
-      //   },
-      // ];
-      // this.currentVideo = this.videoItems[this.activeIndex];
-      // console.log(this.videoItems);
-    // });
-
-    this.randColorPick();
-    // this.videoService.bugs$.subscribe((b) => {
-    //   this.bugs = b;
-    //   console.log(this.bugs);
-    // });
   }
 
   ngAfterViewInit(): void {

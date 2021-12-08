@@ -49,7 +49,7 @@ export class PlayrunsComponent implements OnInit, OnDestroy {
 
   onItemClick(playrun: string): void {
     this.videoService.getPlayrunReport(this.game, this.build, playrun);
-    this.router.navigate(['/app-video', playrun]);
+    this.router.navigate(['/app-video', this.game, this.build, playrun]);
   }
 
   ngOnDestroy(): void {
