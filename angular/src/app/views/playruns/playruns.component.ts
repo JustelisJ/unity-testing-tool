@@ -31,7 +31,7 @@ export class PlayrunsComponent implements OnInit, OnDestroy {
     });
 
     this.videoService.playruns$.subscribe((p) => (this.playruns = p));
-    // this.initDummyData();
+    this.initDummyData();
   }
 
   initDummyData(): void {
@@ -48,8 +48,8 @@ export class PlayrunsComponent implements OnInit, OnDestroy {
   }
 
   onItemClick(playrun: string): void {
-    // this.videoService.getVideo(playrun);
-    this.router.navigate(['/app-video']);
+    this.videoService.getPlayrunReport(this.game, this.build, playrun);
+    this.router.navigate(['/app-video', playrun]);
   }
 
   ngOnDestroy(): void {

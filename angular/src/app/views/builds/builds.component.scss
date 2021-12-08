@@ -16,28 +16,64 @@ body {
   color: #6F95CD;
 }
 
-.buildlist {
-  text-decoration: none;
-  text-align: center;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
+// .buildlist {
+//   text-decoration: none;
+//   text-align: center;
+//   list-style-type: none;
+//   margin: 0;
+//   padding: 0;
+// }
 
-.listitem {
-  margin-top: 15px;
-  margin-bottom: 0px;
-  padding-bottom: 0px;
+// .listitem {
+//   margin-top: 15px;
+//   margin-bottom: 0px;
+//   padding-bottom: 0px;
+//   border: 2px solid white;
+//   border-radius: 15px;
+//   cursor: pointer;
+//   background-color: #585858;
+//   :hover {
+//     background-color: #6F95CD;
+//     border-radius: 15px;
+//     span.only-hover {
+//       visibility: visible;
+//       color: white;
+//     }
+//   }
+// }
+
+.build-report-div {
+  // :hover {
+  //   background-color: #6F95CD !important;
+  //   border-radius: 11px;
+  // }
+  text-align: center;
+  background-color: #585858;
+  margin-bottom: 15px;
+  color: white;
   border: 2px solid white;
   border-radius: 15px;
   cursor: pointer;
-  height: 50px;
-  background-color: #585858;
-  :hover {
-    background-color: #6F95CD;
-    height: 46px;
-    border-radius: 15px;
-  }
+}
+
+.extended-info {
+  color: white;
+  margin-bottom: 5px;
+  font-size: large;
+}
+
+.playruns-button {
+  margin-bottom: 5px;
+}
+
+.see-playruns{
+  border-radius: 10px;
+  background-color: #6F95CD;
+  color: white;
+}
+
+.hideChildren>div{
+   display: none;
 }
 
 .buildtext {

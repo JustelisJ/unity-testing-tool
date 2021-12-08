@@ -2,6 +2,9 @@ import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { VideoService } from '../../shared/services/video.service';
 import { Bug } from '../../shared/models/bug.model';
 import { VideoObject } from 'src/app/shared/models/video.model';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { PlayRunReport } from '../../shared/models/playrun.model';
 
 @Component({
   selector: 'app-video',
@@ -13,8 +16,13 @@ export class VideoComponent implements OnInit, AfterViewInit {
     name: '',
     src: '',
   };
+  playrunReport: PlayRunReport;
   bugs: Bug[] = [];
   colors: string[] = [];
+  private sub: any;
+  game = '';
+  videoName = '';
+  build = '';
 
   videoItems = [
     {
@@ -36,25 +44,54 @@ export class VideoComponent implements OnInit, AfterViewInit {
 
   constructor(
     private videoService: VideoService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.activeBug = false;
-    this.videoService.getVideoName();
-    this.videoService.videoName$.subscribe((v) => {
-      this.videoObject = v;
-      console.log(this.videoObject);
+    this.sub = this.route.params.subscribe((params) => {
+      this.game = params.game;
+      this.build = params.build;
+      this.videoName = params.playrun;
+      console.log(params);
+      this.videoService.playrunReport$.subscribe((p) => {
+        this.playrunReport = p;
+        console.log(this.playrunReport);
+      });
+
       this.videoItems = [
         {
-          name: this.videoObject?.name,
-          src: 'assets/' + this.videoObject?.src,
+          name: this.videoName,
+          src:
+            'assets/videos/' +
+            this.game +
+            '/' +
+            this.build +
+            '/' +
+            this.videoName,
           type: 'video/mp4',
         },
       ];
       this.currentVideo = this.videoItems[this.activeIndex];
       console.log(this.videoItems);
     });
+    this.activeBug = false;
+
+    // this.videoService.getVideoName();
+    // this.videoService.videoName$.subscribe((v) => {
+    //   this.videoObject = v;
+    //   console.log(this.videoObject);
+      // this.videoItems = [
+      //   {
+      //     name: this.videoObject?.name,
+      //     src: 'assets/' + this.videoObject?.src,
+      //     type: 'video/mp4',
+      //   },
+      // ];
+      // this.currentVideo = this.videoItems[this.activeIndex];
+      // console.log(this.videoItems);
+    // });
+
     this.randColorPick();
     this.videoService.bugs$.subscribe((b) => {
       this.bugs = b;
@@ -73,9 +110,6 @@ export class VideoComponent implements OnInit, AfterViewInit {
     this.data
       .getDefaultMedia()
       .subscriptions.loadedMetadata.subscribe(this.initVdo.bind(this));
-    // this.data
-    //   .getDefaultMedia()
-    //   .subscriptions.ended.subscribe(this.nextVideo.bind(this));
   }
 
   bugsInit(): void {
@@ -118,19 +152,9 @@ export class VideoComponent implements OnInit, AfterViewInit {
 
   refreshLatestVideo(): void {
     this.activeBug = false;
-    this.videoService.getVideoName();
+    // this.videoService.getVideoName();
     this.currentVideo = this.videoItems[this.activeIndex];
   }
-
-  // nextVideo(): void {
-  //   this.activeIndex++;
-
-  //   if (this.activeIndex === this.videoItems.length) {
-  //     this.activeIndex = 0;
-  //   }
-
-  //   this.currentVideo = this.videoItems[this.activeIndex];
-  // }
 
   initVdo(): void {
     this.data.play();
@@ -181,4 +205,6 @@ export class VideoComponent implements OnInit, AfterViewInit {
       this.bugDescription = '';
     }
   }
+
+
 }

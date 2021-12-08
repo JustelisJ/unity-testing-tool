@@ -21,7 +21,7 @@ export class GamesComponent implements OnInit {
       '#212121';
     this.videoService.getGames();
     this.videoService.games$.subscribe((g) => (this.games = g));
-    // this.initDummyData();
+    this.initDummyData();
   }
 
   initDummyData(): void {

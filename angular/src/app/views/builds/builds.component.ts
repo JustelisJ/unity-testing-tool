@@ -1,3 +1,4 @@
+import { BuildReport } from './../../shared/models/build.model';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { VideoService } from 'src/app/shared/services/video.service';
@@ -8,7 +9,8 @@ import { VideoService } from 'src/app/shared/services/video.service';
   styleUrls: ['./builds.component.scss'],
 })
 export class BuildsComponent implements OnInit, OnDestroy {
-  builds: string[]; // BuildReport[]
+  builds: string[];
+  buildReports: BuildReport[] = [];
   private sub: any;
   game: string;
 
@@ -28,26 +30,32 @@ export class BuildsComponent implements OnInit, OnDestroy {
     });
     this.videoService.builds$.subscribe((b) => (this.builds = b));
 
-    // this.initDummyData();
-
-
+    this.initDummyData();
   }
 
   initDummyData(): void {
-    this.builds = [
-      'build1',
-      'build2',
-      'build3',
-      'build4',
-      'build5',
-      'build6',
-      'build7',
-      'build8',
-    ];
+    this.builds = ['build1', 'build2', 'build3', 'build4'];
+
+    this.buildReports.push({
+      game: 'test1',
+      buildId: 'testBuild1',
+      averagePlayTime: 1,
+      totalNumberofBugs: 2,
+      averageNumberOfBugsPerPlayrun: 3
+    });
+    this.buildReports.push({
+      game: 'test2',
+      buildId: 'testBuild2',
+      averagePlayTime: 1,
+      totalNumberofBugs: 2,
+      averageNumberOfBugsPerPlayrun: 3,
+    });
+    console.log(this.buildReports);
   }
 
   onItemClick(build: string): void {
-    this.videoService.getPlayruns(this.game, build);
+    this.videoService.getPlayrunsNames(this.game, build);
+    console.log(this.game, build);
     this.router.navigate(['/app-playruns', this.game, build]);
   }
 
