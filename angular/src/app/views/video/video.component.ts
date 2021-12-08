@@ -76,6 +76,7 @@ export class VideoComponent implements OnInit, AfterViewInit {
       console.log(this.videoItems);
     });
     this.activeBug = false;
+
     // this.videoService.getVideoName();
     // this.videoService.videoName$.subscribe((v) => {
     //   this.videoObject = v;
@@ -90,6 +91,7 @@ export class VideoComponent implements OnInit, AfterViewInit {
       // this.currentVideo = this.videoItems[this.activeIndex];
       // console.log(this.videoItems);
     // });
+
     this.randColorPick();
     this.videoService.bugs$.subscribe((b) => {
       this.bugs = b;
@@ -108,9 +110,6 @@ export class VideoComponent implements OnInit, AfterViewInit {
     this.data
       .getDefaultMedia()
       .subscriptions.loadedMetadata.subscribe(this.initVdo.bind(this));
-    // this.data
-    //   .getDefaultMedia()
-    //   .subscriptions.ended.subscribe(this.nextVideo.bind(this));
   }
 
   bugsInit(): void {
@@ -153,19 +152,9 @@ export class VideoComponent implements OnInit, AfterViewInit {
 
   refreshLatestVideo(): void {
     this.activeBug = false;
-    this.videoService.getVideoName();
+    // this.videoService.getVideoName();
     this.currentVideo = this.videoItems[this.activeIndex];
   }
-
-  // nextVideo(): void {
-  //   this.activeIndex++;
-
-  //   if (this.activeIndex === this.videoItems.length) {
-  //     this.activeIndex = 0;
-  //   }
-
-  //   this.currentVideo = this.videoItems[this.activeIndex];
-  // }
 
   initVdo(): void {
     this.data.play();
@@ -216,4 +205,6 @@ export class VideoComponent implements OnInit, AfterViewInit {
       this.bugDescription = '';
     }
   }
+
+
 }

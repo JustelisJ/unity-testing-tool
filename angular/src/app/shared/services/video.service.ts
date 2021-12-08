@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Bug } from '../models/bug.model';
 import { VideoObject } from '../models/video.model';
 import { PlayRunReport } from '../models/playrun.model';
+import { BuildReport } from 'src/app/shared/models/build.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ import { PlayRunReport } from '../models/playrun.model';
 export class VideoService {
   private gamesUrl = '/game';
   private buildsUrl = '/game/build';
+  private buildreportsUrl = '/game/buildreport';
   private playrunUrl = '/playrun/';
   private playrunNamesUrl = '/video';
   private videoUrl = '/video/recent';
@@ -25,13 +27,16 @@ export class VideoService {
     null
   );
 
+  public buildReport$: BehaviorSubject<BuildReport[]> = new BehaviorSubject<
+    BuildReport[]
+  >(null);
+
   public playruns$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
     null
   );
 
-  public playrunReport$: BehaviorSubject<PlayRunReport> = new BehaviorSubject<PlayRunReport>(
-    null
-  );
+  public playrunReport$: BehaviorSubject<PlayRunReport> =
+    new BehaviorSubject<PlayRunReport>(null);
 
   public videoName$: BehaviorSubject<VideoObject> =
     new BehaviorSubject<VideoObject>(null);
@@ -72,6 +77,28 @@ export class VideoService {
     }
   }
 
+  public getBuildReports(game: string, build: string): any {
+    try {
+      const resp = this.http
+        .get<BuildReport[]>(
+          environment.apiConfig.api_local_url +
+            this.buildreportsUrl +
+            '?game=' +
+            game +
+            '&build=' +
+            build
+        )
+        .subscribe((data: BuildReport[]) => {
+          this.buildReport$.next(data);
+          console.log(this.buildReport$);
+        });
+      return resp;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
   public getPlayrunsNames(game: string, build: string): any {
     try {
       const resp = this.http
@@ -99,13 +126,13 @@ export class VideoService {
       const resp = this.http
         .get<PlayRunReport>(
           environment.apiConfig.api_local_url +
-          this.playrunUrl +
-          '?game=' +
-          game +
-          '&build=' +
-          build +
-          '&playrun=' +
-          playrun
+            this.playrunUrl +
+            '?game=' +
+            game +
+            '&build=' +
+            build +
+            '&playrun=' +
+            playrun
         )
         .subscribe((data: PlayRunReport) => {
           this.playrunReport$.next(data);
@@ -118,42 +145,42 @@ export class VideoService {
     }
   }
 
-  public getVideoName(): any {
-    try {
-      const resp = this.http
-        .get<VideoObject>(environment.apiConfig.api_local_url + this.videoUrl)
-        .subscribe((data: VideoObject) => {
-          this.videoName$.next(data);
-          console.log(this.videoName$.value);
-        });
-      return resp;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
+  // public getVideoName(): any {
+  //   try {
+  //     const resp = this.http
+  //       .get<VideoObject>(environment.apiConfig.api_local_url + this.videoUrl)
+  //       .subscribe((data: VideoObject) => {
+  //         this.videoName$.next(data);
+  //         console.log(this.videoName$.value);
+  //       });
+  //     return resp;
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw error;
+  //   }
+  // }
 
-  public getBugs(game: string, build: string, playrun: string): any {
-    try {
-      const resp = this.http
-        .get<Bug[]>(
-          environment.apiConfig.api_local_url +
-            this.bugsUrl +
-            '?game=' +
-            game +
-            '&build=' +
-            build +
-            '&playrun=' +
-            playrun
-        )
-        .subscribe((data: Bug[]) => {
-          this.bugs$.next(data);
-          console.log(this.bugs$);
-        });
-      return resp;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
+  // public getBugs(game: string, build: string, playrun: string): any {
+  //   try {
+  //     const resp = this.http
+  //       .get<Bug[]>(
+  //         environment.apiConfig.api_local_url +
+  //           this.bugsUrl +
+  //           '?game=' +
+  //           game +
+  //           '&build=' +
+  //           build +
+  //           '&playrun=' +
+  //           playrun
+  //       )
+  //       .subscribe((data: Bug[]) => {
+  //         this.bugs$.next(data);
+  //         console.log(this.bugs$);
+  //       });
+  //     return resp;
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw error;
+  //   }
+  // }
 }

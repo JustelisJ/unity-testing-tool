@@ -9,7 +9,7 @@ import { VideoService } from 'src/app/shared/services/video.service';
   styleUrls: ['./builds.component.scss'],
 })
 export class BuildsComponent implements OnInit, OnDestroy {
-  builds: string[]; // BuildReport[]
+  builds: string[];
   buildReports: BuildReport[] = [];
   private sub: any;
   game: string;
@@ -34,29 +34,23 @@ export class BuildsComponent implements OnInit, OnDestroy {
   }
 
   initDummyData(): void {
-    this.builds = [
-      'build1',
-      'build2',
-      'build3',
-      'build4'
-    ];
+    this.builds = ['build1', 'build2', 'build3', 'build4'];
 
     this.buildReports.push({
-      buildId:  'testBuild1',
+      game: 'test1',
+      buildId: 'testBuild1',
       averagePlayTime: 1,
       totalNumberofBugs: 2,
-      averageNumberOfBugsPerPlayrun: 3,
-      checkpointsPassed: 4,
+      averageNumberOfBugsPerPlayrun: 3
     });
     this.buildReports.push({
+      game: 'test2',
       buildId: 'testBuild2',
       averagePlayTime: 1,
       totalNumberofBugs: 2,
       averageNumberOfBugsPerPlayrun: 3,
-      checkpointsPassed: 4,
     });
     console.log(this.buildReports);
-
   }
 
   onItemClick(build: string): void {

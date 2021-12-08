@@ -11,7 +11,7 @@
   (click)="ele.class = ele.class == 'showChildren' ? '' :  'showChildren'"
   [ngClass]="{ hideChildren : ele.class !== 'showChildren' }" #ele>
     <h2>{{ build.buildId }}</h2>
-    <div class="extended-info"> Average playtime: {{ build.averagePlayTime }}, No. of bugs: {{ build.totalNumberofBugs }}, Avg. bugs per playrun: {{ build.averageNumberOfBugsPerPlayrun }}, Checkpoints passed: {{ build.checkpointsPassed }}</div>
+    <div class="extended-info"> Average playtime: {{ build.averagePlayTime }}, No. of bugs: {{ build.totalNumberofBugs }}, Avg. bugs per playrun: {{ build.averageNumberOfBugsPerPlayrun }}</div>
     <div class="playruns-button">
       <button mat-button class="see-playruns" (click)="onItemClick(build.buildId)">See Playruns</button>
     </div>
