@@ -30,7 +30,7 @@
 
   <div class="timeline-container">
     <div class="timeline-line">
-      <div class="bug-div change-color" *ngFor="let bug of bugs; let i = index" [attr.data-index]="i"
+      <div class="bug-div change-color" *ngFor="let bug of playrunReport.bugReports; let i = index" [attr.data-index]="i"
       [style.width]="((bug.timeVideoReference.end - bug.timeVideoReference.start) / duration) * 100 + '%'"
       [style.margin-left]="(bug.timeVideoReference.start / duration) * 100 + '%'"
       [style.z-index]="i+1"
@@ -57,14 +57,14 @@
       </div>
     </ng-container>
 
-    <ng-container *ngIf="">
+    <!-- <ng-container *ngIf="">
       <div class="level-info-container">
         <div class="level-info-text-div">
           <h2 class="level-text">{{ bugName }}</h2>
           <h3 class="level-text">{{ bugDescription }}</h3>
         </div>
       </div>
-    </ng-container>
+    </ng-container> -->
   </div>
 
   <!-- <div class="latest-div">

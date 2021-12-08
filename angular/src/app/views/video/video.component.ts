@@ -93,10 +93,10 @@ export class VideoComponent implements OnInit, AfterViewInit {
     // });
 
     this.randColorPick();
-    this.videoService.bugs$.subscribe((b) => {
-      this.bugs = b;
-      console.log(this.bugs);
-    });
+    // this.videoService.bugs$.subscribe((b) => {
+    //   this.bugs = b;
+    //   console.log(this.bugs);
+    // });
   }
 
   ngAfterViewInit(): void {
@@ -180,7 +180,7 @@ export class VideoComponent implements OnInit, AfterViewInit {
   }
 
   randColorPick(): void {
-    this.bugs.forEach((bug) => {
+    this.playrunReport.bugReports.forEach((bug) => {
       this.colors.push('#' + Math.floor(Math.random() * 16777215).toString(16));
     });
   }
