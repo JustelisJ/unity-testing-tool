@@ -4,9 +4,11 @@ import com.endregas.warriors.unitytesting.exceptions.DirectoryDoesNotExistExcept
 import com.endregas.warriors.unitytesting.services.BuildService;
 import com.endregas.warriors.unitytesting.services.ConnectionService;
 import com.endregas.warriors.unitytesting.services.GameService;
+import com.endregas.warriors.unitytesting.utils.CommonValidations;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.io.File;
 import java.util.Arrays;
@@ -24,8 +26,11 @@ class ConnectionServiceImplTest {
     public static final String BUILD_1 = "1";
     public static final String BUILD_2 = "2";
 
+    @Mock
+    CommonValidations commonValidations;
+
     final GameService gameService = new GameServiceImpl();
-    final BuildService buildService = new BuildServiceImpl();
+    final BuildService buildService = new BuildServiceImpl(commonValidations);
     final ConnectionService connectionService = new ConnectionServiceImpl();
 
     @BeforeEach
@@ -67,17 +72,19 @@ class ConnectionServiceImplTest {
     }
 
     @Test
-    void getGameWithLatestBuildMap_oneGameAndTwoBuildDirectories() throws DirectoryDoesNotExistException {
+    void getGameWithLatestBuildMap_oneGameAndTwoBuildDirectories() throws DirectoryDoesNotExistException, InterruptedException {
         gameService.createNewGameDirectory(GAME_NAME_1);
         buildService.createNewBuildInGameDirectory(GAME_NAME_1, BUILD_1);
+        Thread.sleep(100);
         buildService.createNewBuildInGameDirectory(GAME_NAME_1, BUILD_2);
         assertEquals(Map.of(GAME_NAME_1, BUILD_2), connectionService.getGameWithLatestBuildMap());
     }
 
     @Test
-    void getGameWithLatestBuildMap_twoGameAndTwoBuildDirectories() throws DirectoryDoesNotExistException {
+    void getGameWithLatestBuildMap_twoGameAndTwoBuildDirectories() throws DirectoryDoesNotExistException, InterruptedException {
         gameService.createNewGameDirectory(GAME_NAME_1);
         buildService.createNewBuildInGameDirectory(GAME_NAME_1, BUILD_1);
+        Thread.sleep(100);
         buildService.createNewBuildInGameDirectory(GAME_NAME_1, BUILD_2);
         gameService.createNewGameDirectory(GAME_NAME_2);
         buildService.createNewBuildInGameDirectory(GAME_NAME_2, BUILD_1);

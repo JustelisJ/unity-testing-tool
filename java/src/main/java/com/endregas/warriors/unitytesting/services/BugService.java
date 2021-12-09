@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BugService {
 
-    BugReportDTO reportABug(BugReportDTO bugReport);
+    void reportBugs(String game, String build, String playRun, List<BugReportDTO> bugReport);
 
     List<BugReportDTO> getBugsForARun(String game, String build, String runId);
 

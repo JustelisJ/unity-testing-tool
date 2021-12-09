@@ -1,6 +1,7 @@
 package com.endregas.warriors.unitytesting.model.dto;
 
 import com.endregas.warriors.unitytesting.model.database.BugReport;
+import com.endregas.warriors.unitytesting.model.utils.TimeInterval;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -13,25 +14,24 @@ import java.time.LocalDate;
 @Getter
 public class BugReportDTO {
 
-    @NotBlank(message = "Game name cannot be blank or null")
-    private String game;
-    @NotBlank(message = "Build id cannot be blank or null")
-    private String build;
-    @NotBlank(message = "Run id cannot be blank or null")
-    private String runId;
+    @Size(max = 100, message = "Bug name cannot be longer than 100 characters")
+    @NotBlank
+    private String bugName;
+    @Size(max = 1500, message = "Bug description cannot contain more than 1500 characters")
+    private String bugDescription;
     @NotNull(message = "Time cannot be null")
-    private Long time;
-    @Size(max = 1000, message = "Notes cannot contain more than 1000 characters")
-    private String notes;
+    private TimeInterval timeVideoReference;
 
-    public BugReport createBugReport() {
+    public BugReport createBugReport(String game, String build, String playRun) {
         return BugReport.builder()
-                .runId(runId)
                 .game(game)
                 .build(build)
+                .playRun(playRun)
                 .timestamp(LocalDate.now())
-                .time(time)
-                .notes(notes)
+                .bugName(bugName)
+                .bugDescription(bugDescription)
+                .fromSec(timeVideoReference.getFrom())
+                .toSec(timeVideoReference.getTo())
                 .build();
     }
 

@@ -6,6 +6,7 @@ import com.endregas.warriors.unitytesting.exceptions.VideoNotFoundException;
 import com.endregas.warriors.unitytesting.services.BuildService;
 import com.endregas.warriors.unitytesting.services.GameService;
 import com.endregas.warriors.unitytesting.services.VideoService;
+import com.endregas.warriors.unitytesting.utils.CommonValidations;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +17,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import static com.endregas.warriors.unitytesting.common.Utils.deleteDirectory;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class VideoServiceImplTest {
 
@@ -32,7 +34,9 @@ class VideoServiceImplTest {
     public static final String GAME_NAME = "testGame";
     public static final String BUILD_VERSION = "1.0";
 
-    VideoService videoService = new VideoServiceImpl();
+    CommonValidations commonValidations = mock(CommonValidations.class);
+
+    VideoService videoService = new VideoServiceImpl(commonValidations);
 
     File videoDirectory;
 
@@ -41,7 +45,7 @@ class VideoServiceImplTest {
         videoDirectory = new File(VIDEO_DIRECTORY);
         GameService gameService = new GameServiceImpl();
         gameService.createNewGameDirectory(GAME_NAME);
-        BuildService buildService = new BuildServiceImpl();
+        BuildService buildService = new BuildServiceImpl(commonValidations);
         buildService.createNewBuildInGameDirectory(GAME_NAME, BUILD_VERSION);
         videoDirectory.mkdirs();
     }
@@ -51,26 +55,12 @@ class VideoServiceImplTest {
         deleteDirectory(VIDEO_DIRECTORY);
     }
 
-    private void deleteDirectory(String directoryName) {
-        File directory = new File(directoryName);
-        String[] allFiles = directory.list();
-        if (allFiles == null) {
-            directory.delete();
-            return;
-        }
-        for (File file : Arrays.stream(allFiles).map(s -> new File(directoryName + SLASH + s)).collect(Collectors.toList())) {
-            if (file.isDirectory()) {
-                deleteDirectory(file.getAbsolutePath());
-            }
-            file.delete();
-        }
-        directory.delete();
-    }
-
     @Test
-    void findMostRecentVideo_directoryDoesNotExist() {
+    void findMostRecentVideo_directoryDoesNotExist() throws NoVideosException {
         deleteDirectory(VIDEO_DIRECTORY);
         assertFalse(videoDirectory.exists());
+//        when(commonValidations).thenThrow(NoVideosException.class);
+        doThrow(NoVideosException.class).when(commonValidations).validateDirectoriesExist(any(File.class));
         assertThrows(NoVideosException.class, () -> videoService.findMostRecentVideo());
     }
 
@@ -122,11 +112,12 @@ class VideoServiceImplTest {
     }
 
     @Test
-    void saveVideo_successfullySaves() {
+    void saveVideo_successfullySaves() throws DirectoryDoesNotExistException {
         String game = "Game name";
         String build = "1.0";
         MultipartFile testFile = new MockMultipartFile(TEST_VIDEO_NAME, TEST_VIDEO_NAME, "video", new byte[0]);
         File gameBuildDirectory = new File(VIDEO_DIRECTORY + game + SLASH + build + SLASH);
+        when(commonValidations.validateThatGameBuildDirectoryExists(game, build)).thenReturn(gameBuildDirectory);
         assertTrue(gameBuildDirectory.mkdirs());
         assertDoesNotThrow(() -> videoService.saveVideo(testFile, game, build));
     }
@@ -138,6 +129,8 @@ class VideoServiceImplTest {
 
     @Test
     void getAllVideosForGameAndBuild_2Videos() throws IOException {
+        File gameBuildDirectory = new File(VIDEO_DIRECTORY + GAME_NAME + SLASH + BUILD_VERSION + SLASH);
+        when(commonValidations.validateThatGameBuildDirectoryExists(GAME_NAME, BUILD_VERSION)).thenReturn(gameBuildDirectory);
         MultipartFile testFile = new MockMultipartFile(TEST_VIDEO_NAME, TEST_VIDEO_NAME, "video", new byte[0]);
         videoService.saveVideo(testFile, GAME_NAME, BUILD_VERSION);
         videoService.saveVideo(testFile, GAME_NAME, BUILD_VERSION);

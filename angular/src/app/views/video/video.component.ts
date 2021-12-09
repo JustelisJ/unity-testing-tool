@@ -17,7 +17,6 @@ export class VideoComponent implements OnInit, AfterViewInit {
     src: '',
   };
   playrunReport: PlayRunReport;
-  bugs: Bug[] = [];
   colors: string[] = [];
   private sub: any;
   game = '';
@@ -71,9 +70,9 @@ export class VideoComponent implements OnInit, AfterViewInit {
           },
         ];
         this.currentVideo = this.videoItems[this.activeIndex];
+        this.randColorPick();
       });
       console.log(this.videoItems);
-      this.randColorPick();
     });
     this.activeBug = false;
   }
@@ -126,13 +125,7 @@ export class VideoComponent implements OnInit, AfterViewInit {
         },
       },
     ];
-    this.bugs = dummyBugs;
-  }
-
-  refreshLatestVideo(): void {
-    this.activeBug = false;
-    // this.videoService.getVideoName();
-    this.currentVideo = this.videoItems[this.activeIndex];
+    // this.bugs = dummyBugs;
   }
 
   initVdo(): void {
@@ -159,9 +152,18 @@ export class VideoComponent implements OnInit, AfterViewInit {
   }
 
   randColorPick(): void {
-    this.playrunReport.bugReports.forEach((bug) => {
-      this.colors.push('#' + Math.floor(Math.random() * 16777215).toString(16));
-    });
+    console.log(this.playrunReport.bugReports);
+    if (
+      this.playrunReport &&
+      this.playrunReport.bugReports &&
+      this.playrunReport.bugReports.length > 0
+    ) {
+      this.playrunReport.bugReports.forEach(() => {
+        this.colors.push(
+          '#' + Math.floor(Math.random() * 16777215).toString(16)
+        );
+      });
+    }
   }
 
   showBugInfoOnClick(bug: Bug): void {

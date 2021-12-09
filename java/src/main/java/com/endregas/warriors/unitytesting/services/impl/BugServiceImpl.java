@@ -17,15 +17,15 @@ public class BugServiceImpl implements BugService {
     private final BugRepository bugRepository;
 
     @Override
-    public BugReportDTO reportABug(BugReportDTO bugReport) {
-        BugReport newBugReport = bugReport.createBugReport();
-        bugRepository.save(newBugReport);
-        return bugReport;
+    public void reportBugs(String game, String build, String playRun, List<BugReportDTO> bugReports) {
+        bugReports.stream()
+                .map(bugReportDTO -> bugReportDTO.createBugReport(game, build, playRun))
+                .forEach(bugRepository::save);
     }
 
     @Override
     public List<BugReportDTO> getBugsForARun(String game, String build, String runId) {
-        List<BugReport> reports = bugRepository.findAllByGameAndBuildAndRunId(game, build, runId);
+        List<BugReport> reports = bugRepository.findAllByGameAndBuildAndPlayRun(game, build, runId);
         return reports.stream()
                 .map(BugReport::convertToDTO)
                 .collect(Collectors.toList());

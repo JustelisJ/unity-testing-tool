@@ -51,7 +51,7 @@ export class VideoService {
         .get<string[]>(environment.apiConfig.api_local_url + this.gamesUrl)
         .subscribe((data: string[]) => {
           this.games$.next(data);
-          console.log(this.games$);
+          console.log(this.games$.value);
         });
       return resp;
     } catch (error) {
@@ -68,7 +68,7 @@ export class VideoService {
         )
         .subscribe((data: string[]) => {
           this.builds$.next(data);
-          console.log(this.builds$);
+          console.log(this.builds$.value);
         });
       return resp;
     } catch (error) {
@@ -90,7 +90,7 @@ export class VideoService {
         )
         .subscribe((data: BuildReport[]) => {
           this.buildReport$.next(data);
-          console.log(this.buildReport$);
+          console.log(this.buildReport$.value);
         });
       return resp;
     } catch (error) {
@@ -112,7 +112,7 @@ export class VideoService {
         )
         .subscribe((data: string[]) => {
           this.playruns$.next(data);
-          console.log(this.playruns$);
+          console.log(this.playruns$.value);
         });
       return resp;
     } catch (error) {
@@ -136,7 +136,7 @@ export class VideoService {
         )
         .subscribe((data: PlayRunReport) => {
           this.playrunReport$.next(data);
-          console.log(this.playrunReport$);
+          console.log(this.playrunReport$.value);
         });
       return resp;
     } catch (error) {
