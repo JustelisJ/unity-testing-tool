@@ -21,7 +21,7 @@ services:
   angular:
     build: angular
     ports:
-      - "4200:80"
+      - "4200:4200"
     container_name: unity-angular
     volumes:
       - .\videos:/app/src/assets/videos
