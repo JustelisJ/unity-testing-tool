@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PlayRunReport } from 'src/app/shared/models/playrun.model';
 import { VideoService } from 'src/app/shared/services/video.service';
 
 @Component({
@@ -9,7 +8,7 @@ import { VideoService } from 'src/app/shared/services/video.service';
   styleUrls: ['./playruns.component.scss'],
 })
 export class PlayrunsComponent implements OnInit, OnDestroy {
-  playruns: string[]; // PlayRunReport[]
+  playruns: string[];
   private sub: any;
   game = '';
   build = '';
@@ -22,15 +21,15 @@ export class PlayrunsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor =
-      '#212121';
     this.sub = this.route.params.subscribe((params) => {
       this.game = params.game;
       this.build = params.build;
       this.videoService.getPlayrunsNames(this.game, this.build);
     });
-
     this.videoService.playruns$.subscribe((p) => (this.playruns = p));
+
+    this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor =
+      '#212121';
     // this.initDummyData();
   }
 

@@ -24,36 +24,54 @@
       <vg-fullscreen></vg-fullscreen>
     </vg-controls>
 
-    <video #media [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto" crossorigin (loadedmetadata)="onMetadata($event,media)">
+    <video #media [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo"
+    preload="auto" crossorigin (loadedmetadata)="onMetadata($event,media)">
     </video>
   </vg-player>
 
   <div class="timeline-container">
-    <div class="timeline-line">
-      <div class="bug-div change-color" *ngFor="let bug of playrunReport?.bugReports; let i = index" [attr.data-index]="i"
-      [style.width]="((Math.floor(bug.timeVideoReference.end) - Math.floor(bug.timeVideoReference.start)) / duration) * 100 + '%'"
-      [style.margin-left]="(Math.floor(bug.timeVideoReference.start) / duration) * 100 + '%'"
-      [style.z-index]="i+1"
-      [style.background-color]="colors[i]"
-      (mouseenter)="showInfoOnHover(bug)"
-      (mouseleave)="clearInfo()"
-      ng-mouseover="hoverActive=true"
-      ng-mouseleave="hoverActive=false">
-      </div>
-    </div>
-
     <div class="time-div">
       <div class="start-time"><p class="start-time-text">00:00:00</p></div>
       <div class="end-time"><p class="end-time-text">{{ durationString }}</p></div>
     </div>
 
+    <div class="timeline-line">
+      <div class="bug-div change-color" *ngFor="let bug of playrunReport?.bugReports; let i = index"
+        [attr.data-index]="i"
+        [style.width]="bugWidth(bug) + '%'"
+        [style.margin-left]="bugMargin(bug) + '%'"
+        [style.z-index]="i+1"
+        [style.background-color]="colors[i]"
+        (mouseenter)="showInfoOnHover(bug)" (mouseleave)="clearInfo()"
+        ng-mouseover="hoverActive=true" ng-mouseleave="hoverActive=false">
+      </div>
+    </div>
+
     <ng-container *ngIf="bugName && bugName !== ''">
       <div class="bug-info-container">
         <div class="bug-info-text-div">
-          <h2 class="bug-text">{{ bugName }}</h2>
-          <h3 class="bug-text">{{ bugDescription }}</h3>
+          <h2 class="bug-text">Name: {{ bugName }}</h2>
+          <h3 class="bug-text">Description: {{ bugDescription }}</h3>
         </div>
       </div>
+    </ng-container>
+
+    <h2 class="bug-list-text">Bugs List:</h2>
+
+    <ng-container *ngIf="playrunReport?.bugReports?.length > 0">
+      <div class="bug-info-container" *ngFor="let bug of playrunReport?.bugReports">
+        <div class="bug-info-text">
+          <h2 class="bug-name">Name: {{ bug.bugName }}</h2>
+          <h3 class="bug-time">Time interval: {{ secondsToTimeString(bug) }}</h3>
+        </div>
+        <div>
+          <h3 class="bug-description">Description: {{ bug.bugDescription }}</h3>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!playrunReport?.bugReports || playrunReport?.bugReports.length <= 0">
+      <h2 class="error-message">There are no bugs registered for this run.</h2>
     </ng-container>
 
     <!-- <ng-container *ngIf="">
