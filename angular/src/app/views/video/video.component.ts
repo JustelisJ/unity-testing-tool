@@ -25,8 +25,8 @@ export class VideoComponent implements OnInit, AfterViewInit {
 
   videoItems = [
     {
-      name: 'Company Presentation',
-      src: 'assets/videos/testGame/1.0/CompanyPres.mp4',
+      name: 'BUI Presentation',
+      src: 'assets/videos/BUI-Presentation.mp4',
       type: 'video/mp4',
     },
   ];
@@ -40,6 +40,7 @@ export class VideoComponent implements OnInit, AfterViewInit {
   bugName = '';
   bugDescription = '';
   activeBug = false;
+  bugs: Bug[] = [];
 
   constructor(
     private videoService: VideoService,
@@ -52,19 +53,17 @@ export class VideoComponent implements OnInit, AfterViewInit {
       this.game = params.game;
       this.build = params.build;
       this.videoName = params.playrun;
-      console.log(params);
       this.videoService.playrunReport$.subscribe((p) => {
         this.playrunReport = p;
-        console.log(this.playrunReport);
         this.videoItems = [
           {
             name: this.videoName,
             src:
-              'assets/videos/' +
+              encodeURIComponent('assets/videos/') +
               this.game +
-              '/' +
+              encodeURIComponent('/') +
               this.build +
-              '/' +
+              encodeURIComponent('/') +
               this.videoName,
             type: 'video/mp4',
           },
@@ -72,7 +71,6 @@ export class VideoComponent implements OnInit, AfterViewInit {
         this.currentVideo = this.videoItems[this.activeIndex];
         this.randColorPick();
       });
-      console.log(this.videoItems);
     });
     this.activeBug = false;
   }
@@ -96,36 +94,20 @@ export class VideoComponent implements OnInit, AfterViewInit {
         bugName: 'test bug 1',
         bugDescription: 'test description 1',
         timeVideoReference: {
-          start: 40,
-          end: 90,
+          from: 10,
+          to: 30,
         },
       },
       {
         bugName: 'test bug 2',
         bugDescription: 'test description 2',
         timeVideoReference: {
-          start: 75,
-          end: 100,
-        },
-      },
-      {
-        bugName: 'test bug 3',
-        bugDescription: 'test description 3',
-        timeVideoReference: {
-          start: 140,
-          end: 150,
-        },
-      },
-      {
-        bugName: 'test bug 4',
-        bugDescription: 'test description 4',
-        timeVideoReference: {
-          start: 160,
-          end: 190,
+          from: 45,
+          to: 60,
         },
       },
     ];
-    // this.bugs = dummyBugs;
+    this.bugs = dummyBugs;
   }
 
   initVdo(): void {
@@ -148,11 +130,37 @@ export class VideoComponent implements OnInit, AfterViewInit {
       (minutes < 10 ? '0' + minutes : minutes) +
       ':' +
       (seconds < 10 ? '0' + seconds : seconds);
-    console.log('duration: ', this.duration / 60);
+  }
+
+  secondsToTimeString(bug: Bug): string {
+    let timeString = '';
+    if (bug) {
+      const minutes = Math.floor(bug.timeVideoReference.from / 60);
+      const seconds = Math.floor(bug.timeVideoReference.from - minutes * 60);
+      const hours = Math.floor(bug.timeVideoReference.from / 3600);
+      timeString =
+        (hours < 10 ? '0' + hours : hours) +
+        ':' +
+        (minutes < 10 ? '0' + minutes : minutes) +
+        ':' +
+        (seconds < 10 ? '0' + seconds : seconds);
+    }
+    if (bug) {
+      const minutes = Math.floor(bug.timeVideoReference.to / 60);
+      const seconds = Math.floor(bug.timeVideoReference.to - minutes * 60);
+      const hours = Math.floor(bug.timeVideoReference.to / 3600);
+      timeString +=
+        ' - ' +
+        (hours < 10 ? '0' + hours : hours) +
+        ':' +
+        (minutes < 10 ? '0' + minutes : minutes) +
+        ':' +
+        (seconds < 10 ? '0' + seconds : seconds);
+    }
+    return timeString;
   }
 
   randColorPick(): void {
-    console.log(this.playrunReport.bugReports);
     if (
       this.playrunReport &&
       this.playrunReport.bugReports &&
@@ -166,11 +174,21 @@ export class VideoComponent implements OnInit, AfterViewInit {
     }
   }
 
+  bugWidth(bug: Bug): number {
+    return (
+      ((bug.timeVideoReference.to - bug.timeVideoReference.from) /
+        this.duration) * 100);
+  }
+
+  bugMargin(bug: Bug): number {
+    return (bug.timeVideoReference.from / this.duration) * 100;
+  }
+
   showBugInfoOnClick(bug: Bug): void {
     this.activeBug = true;
     this.bugName = bug.bugName;
     this.bugDescription = bug.bugDescription;
-    this.data.getDefaultMedia().currentTime = bug.timeVideoReference.start;
+    this.data.getDefaultMedia().currentTime = bug.timeVideoReference.from;
   }
 
   showInfoOnHover(bug: Bug): void {
@@ -186,6 +204,4 @@ export class VideoComponent implements OnInit, AfterViewInit {
       this.bugDescription = '';
     }
   }
-
-
 }

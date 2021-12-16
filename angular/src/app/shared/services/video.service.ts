@@ -16,13 +16,11 @@ export class VideoService {
   private buildreportsUrl = '/game/buildreport';
   private playrunUrl = '/playrun/';
   private playrunNamesUrl = '/video';
-  private videoUrl = '/video/recent';
-  private bugsUrl = '/bug/';
 
   public games$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
     null
   );
-  // BuildReport[]
+
   public builds$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
     null
   );
@@ -31,9 +29,9 @@ export class VideoService {
     BuildReport[]
   >(null);
 
-  public playruns$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
-    null
-  );
+  public playruns$: BehaviorSubject<string[]> = new BehaviorSubject<
+    string[]
+  >(null);
 
   public playrunReport$: BehaviorSubject<PlayRunReport> =
     new BehaviorSubject<PlayRunReport>(null);
@@ -48,7 +46,10 @@ export class VideoService {
   public getGames(): any {
     try {
       const resp = this.http
-        .get<string[]>(environment.apiConfig.api_local_url + this.gamesUrl)
+        .get<string[]>(
+          environment.apiConfig.api_local_url +
+            encodeURI(this.gamesUrl)
+        )
         .subscribe((data: string[]) => {
           this.games$.next(data);
           console.log(this.games$.value);
@@ -64,7 +65,10 @@ export class VideoService {
     try {
       const resp = this.http
         .get<string[]>(
-          environment.apiConfig.api_local_url + this.buildsUrl + '?game=' + game
+          environment.apiConfig.api_local_url +
+            encodeURI(this.buildsUrl) +
+            encodeURI('?game=') +
+            game
         )
         .subscribe((data: string[]) => {
           this.builds$.next(data);
@@ -82,10 +86,10 @@ export class VideoService {
       const resp = this.http
         .get<BuildReport[]>(
           environment.apiConfig.api_local_url +
-            this.buildreportsUrl +
-            '?game=' +
+            encodeURI(this.buildreportsUrl) +
+            encodeURI('?game=') +
             game +
-            '&build=' +
+            encodeURI('&build=') +
             build
         )
         .subscribe((data: BuildReport[]) => {
@@ -104,10 +108,10 @@ export class VideoService {
       const resp = this.http
         .get<string[]>(
           environment.apiConfig.api_local_url +
-            this.playrunNamesUrl +
-            '?game=' +
+            encodeURI(this.playrunNamesUrl) +
+            encodeURI('?game=') +
             game +
-            '&build=' +
+            encodeURI('&build=') +
             build
         )
         .subscribe((data: string[]) => {
@@ -126,12 +130,12 @@ export class VideoService {
       const resp = this.http
         .get<PlayRunReport>(
           environment.apiConfig.api_local_url +
-            this.playrunUrl +
-            '?game=' +
+            encodeURI(this.playrunUrl) +
+            encodeURI('?game=') +
             game +
-            '&build=' +
+            encodeURI('&build=') +
             build +
-            '&playrun=' +
+            encodeURI('&playrun=') +
             playrun
         )
         .subscribe((data: PlayRunReport) => {
@@ -144,43 +148,4 @@ export class VideoService {
       throw error;
     }
   }
-
-  // public getVideoName(): any {
-  //   try {
-  //     const resp = this.http
-  //       .get<VideoObject>(environment.apiConfig.api_local_url + this.videoUrl)
-  //       .subscribe((data: VideoObject) => {
-  //         this.videoName$.next(data);
-  //         console.log(this.videoName$.value);
-  //       });
-  //     return resp;
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw error;
-  //   }
-  // }
-
-  // public getBugs(game: string, build: string, playrun: string): any {
-  //   try {
-  //     const resp = this.http
-  //       .get<Bug[]>(
-  //         environment.apiConfig.api_local_url +
-  //           this.bugsUrl +
-  //           '?game=' +
-  //           game +
-  //           '&build=' +
-  //           build +
-  //           '&playrun=' +
-  //           playrun
-  //       )
-  //       .subscribe((data: Bug[]) => {
-  //         this.bugs$.next(data);
-  //         console.log(this.bugs$);
-  //       });
-  //     return resp;
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw error;
-  //   }
-  // }
 }
