@@ -25,7 +25,7 @@ public class PlayRunReportController {
         return ResponseEntity.ok().body("Report uploaded successfully");
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/playrun",
             produces = "application/json")
     public ResponseEntity<PlayRunReportDTO> getVideoReport(String game, String build, String playrun) throws DirectoryDoesNotExistException {

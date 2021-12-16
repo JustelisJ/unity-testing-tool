@@ -18,7 +18,7 @@ public class GameController {
 
     private final GameService gameService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/game")
     public ResponseEntity<List<String>> getAllGames() {
         List<String> games = gameService.getAllGames();
