@@ -10,162 +10,18 @@
     "http"
   ],
   "paths": {
-    "/video": {
+    "/connect": {
       "get": {
-        "summary": "Get all video names for a game/build",
-        "description": "Get all video names for a game/build",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "#/parameters/Game"
-          },
-          {
-            "$ref": "#/parameters/Build"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of video names",
-            "examples": {
-              "application/text": "[\"video.mp4\"]"
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Saves game recording",
-        "description": "Saves game recording inside resource/video directory",
-        "consumes": [
-          "video/mp4"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "#/parameters/Game"
-          },
-          {
-            "$ref": "#/parameters/Build"
-          },
-          {
-            "$ref": "#/parameters/File"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Video saved on the server",
-            "examples": {
-              "application/text": "File is uploaded successfully"
-            }
-          },
-          "400": {
-            "description": "There were some problems uploading the video",
-            "examples": {
-              "application/text": "Game directory [game/build] does not exist"
-            }
-          }
-        }
-      }
-    },
-    "/video/recent": {
-      "get": {
-        "summary": "Returns the most recent video uploaded to the server",
-        "description": "Returns the relative path for the most recent video uploaded to the server",
+        "summary": "Checks connection and returns map of games with latest build",
+        "description": "Checks connection and returns map of games with latest build",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "Path to the video",
+            "description": "Map of game with latest build",
             "examples": {
-              "application/text": "./resources/videos/{gameName}/{buildId}/{playRun}.mp4"
-            }
-          },
-          "400": {
-            "description": "Video could not be found",
-            "examples": {
-              "application/text": "Video could not be found"
-            }
-          },
-          "400": {
-            "description": "There are no videos on the server",
-            "examples": {
-              "application/text": "There are no videos"
-            }
-          }
-        }
-      }
-    },
-    "/bug": {
-      "post": {
-        "summary": "Saves bug report",
-        "description": "Endpoint to receive bug reports from players",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "#/parameters/Report"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns the saved bug report",
-            "schema": {
-              "$ref": "#/definitions/BugReportDTO"
-            },
-            "examples": {
-              "application/json": {
-                "buildId": "1.0.1",
-                "runId": "1.0.1",
-                "time": "10",
-                "notes": "I walked through a wall"
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "summary": "Returns a list of bug for a specific run",
-        "description": "Returns all the bugs for a run",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "#/parameters/Game"
-          },
-          {
-            "$ref": "#/parameters/Build"
-          },
-          {
-            "$ref": "#/parameters/RunId"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "All bug reports",
-            "schema": {
-              "$ref": "#/definitions/BugReportDTOResponse"
-            },
-            "examples": {
-              "BugReportDTOResponse": [
-                {
-                  "buildId": "1.0.1",
-                  "runId": "1.0.1",
-                  "time": "10",
-                  "notes": "I walked through a wall"
-                },
-                {
-                  "buildId": "1.0.1",
-                  "runId": "1.0.1",
-                  "time": "100",
-                  "notes": "The player glitched"
-                }
-              ]
+              "application/text": "{\"testGame2\": \"1.1\",\"testGame\": \"1.1\"}"
             }
           }
         }
@@ -271,18 +127,154 @@
         }
       }
     },
-    "/connect" : {
+    "/video": {
       "get": {
-        "summary": "Checks connection and returns map of games with latest build",
-        "description": "Checks connection and returns map of games with latest build",
+        "summary": "Get all video names for a game/build",
+        "description": "Get all video names for a game/build",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/Game"
+          },
+          {
+            "$ref": "#/parameters/Build"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of video names",
+            "examples": {
+              "application/text": "[\"video.mp4\"]"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Saves game recording",
+        "description": "Saves game recording inside resource/video directory",
+        "consumes": [
+          "video/mp4"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/Game"
+          },
+          {
+            "$ref": "#/parameters/Build"
+          },
+          {
+            "$ref": "#/parameters/File"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Video saved on the server",
+            "examples": {
+              "application/text": "File is uploaded successfully"
+            }
+          },
+          "400": {
+            "description": "There were some problems uploading the video",
+            "examples": {
+              "application/text": "Game directory [game/build] does not exist"
+            }
+          }
+        }
+      }
+    },
+    "/video/recent": {
+      "get": {
+        "summary": "Returns the most recent video uploaded to the server",
+        "description": "Returns the relative path for the most recent video uploaded to the server",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "Map of game with latest build",
+            "description": "Path to the video",
             "examples": {
-              "application/text": "{\"testGame2\": \"1.1\",\"testGame\": \"1.1\"}"
+              "application/text": "./resources/videos/{gameName}/{buildId}/{playRun}.mp4"
+            }
+          },
+          "400": {
+            "description": "Video could not be found",
+            "examples": {
+              "application/text": "Video could not be found"
+            }
+          },
+          "400": {
+            "description": "There are no videos on the server",
+            "examples": {
+              "application/text": "There are no videos"
+            }
+          }
+        }
+      }
+    },
+    "/playrun": {
+      "get": {
+        "summary": "Get play run report for a video",
+        "description": "Get play run report for a game/build/video",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/Game"
+          },
+          {
+            "$ref": "#/parameters/Build"
+          },
+          {
+            "$ref": "#/parameters/Video"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Playrun report found for the game/build/video",
+            "schema": {
+              "$ref": "#/definitions/PlayRunReportDTO"
+            },
+            "examples": {
+              "PlayRunReportDTO": {
+                "gameRef": "Game name",
+                "buildRef": "beta.1.0",
+                "videoRef": "Video name",
+                "bugReports": [
+                  {
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Save play run report",
+        "description": "Saves game recording inside resource/video directory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Play run report",
+            "description": "Play run report",
+            "schema": {
+              "$ref": "#/definitions/PlayRunReportDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report uploaded successfully",
+            "examples": {
+              "application/text": "Report uploaded successfully"
             }
           }
         }
@@ -308,7 +300,7 @@
       "minLength": 1,
       "maxLength": 50
     },
-    "RunId": {
+    "Video": {
       "description": "Players run identifier",
       "name": "runId",
       "type": "string",
@@ -323,37 +315,81 @@
       "type": "file",
       "required": true,
       "in": "formData"
-    },
-    "Report": {
-      "description": "Bug report DTO",
-      "name": "report",
-      "required": true,
-      "in": "body",
-      "schema": {
-        "$ref": "#/definitions/BugReportDTO"
-      }
     }
   },
   "definitions": {
+    "TimeVideoReference": {
+      "description": "Bug reporting time frame",
+      "type": "object",
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "description": "Timestamp when the bug started",
+          "type": "number",
+          "example": 15.4
+        },
+        "to": {
+          "description": "Timestamp when the bug finished",
+          "type": "number",
+          "example": 22.92
+        }
+      }
+    },
     "BugReportDTO": {
       "description": "Bug report DTO",
       "type": "object",
       "required": [
-        "game",
-        "build",
-        "runId",
-        "time",
-        "notes"
+        "bugName",
+        "bugDescription",
+        "timeVideoReference"
       ],
       "properties": {
-        "game": {
+        "bugName": {
+          "description": "Bug name",
+          "type": "string",
+          "example": "Wall glitch",
+          "maxLength": 100
+        },
+        "bugDescription": {
+          "description": "Bug description",
+          "type": "string",
+          "example": "I walked through a wall",
+          "maxLength": 1500
+        },
+        "timeVideoReference": {
+          "description": "Time period when the bug happened",
+          "type": "object",
+          "$ref": "#/definitions/TimeVideoReference",
+          "example": {
+            "application/json": {
+              "from": 5.4,
+              "to": 14.32
+            }
+          }
+        }
+      }
+    },
+    "PlayRunReportDTO": {
+      "description": "Play run report DTO",
+      "type": "object",
+      "required": [
+        "gameRef",
+        "buildRef",
+        "videoRef",
+        "bugReports"
+      ],
+      "properties": {
+        "gameRef": {
           "description": "Name of the game",
           "type": "string",
           "example": "The fun adventures of ...",
           "minLength": 1,
           "maxLength": 50
         },
-        "buildId": {
+        "buildRef": {
           "description": "Build id identifies which build of a game the bug was reported on",
           "type": "string",
           "example": "1.0.1",
@@ -361,7 +397,7 @@
           "maxLength": 20,
           "pattern": "^\\d+(\\.\\d+)*$"
         },
-        "runId": {
+        "videoRef": {
           "description": "Run id identifies which run it belongs to",
           "type": "string",
           "example": "1.0.1",
@@ -369,41 +405,22 @@
           "maxLength": 20,
           "pattern": "^\\d+(\\.\\d+)*$"
         },
-        "time": {
+        "bugReports": {
           "description": "Time of the video where the bug was reported",
-          "type": "number",
-          "example": "10",
-          "minimum": 0
-        },
-        "notes": {
-          "description": "Players notes of what happened",
-          "type": "string",
-          "example": "I walked through a wall",
-          "minLength": 0,
-          "maxLength": 1000
+          "type": "array",
+          "$ref": "#/definitions/BugReportDTO",
+          "example": {
+            "application/json": [
+              {
+                "buildId": "1.0.1",
+                "runId": "1.0.1",
+                "time": "10",
+                "notes": "I walked through a wall"
+              }
+            ]
+          }
         }
       }
-    },
-    "BugReportDTOResponse": {
-      "description": "List of bug reports for a run",
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/BugReportDTO"
-      },
-      "example": [
-        {
-          "buildId": "1.0.1",
-          "runId": "1.0.1",
-          "time": "10",
-          "notes": "I walked through a wall"
-        },
-        {
-          "buildId": "1.0.1",
-          "runId": "1.0.1",
-          "time": "100",
-          "notes": "The player glitched"
-        }
-      ]
     }
   }
 }
