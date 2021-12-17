@@ -30,8 +30,8 @@ public class BugReportDTO {
                 .timestamp(LocalDate.now())
                 .bugName(bugName)
                 .bugDescription(bugDescription)
-                .fromSec(timeVideoReference.getFrom())
-                .toSec(timeVideoReference.getTo())
+                .fromSec(timeVideoReference.getStart())
+                .toSec(timeVideoReference.getEnd())
                 .build();
     }
 

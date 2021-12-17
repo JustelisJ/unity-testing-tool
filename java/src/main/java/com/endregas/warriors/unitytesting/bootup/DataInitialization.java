@@ -1,6 +1,5 @@
 package com.endregas.warriors.unitytesting.bootup;
 
-import com.endregas.warriors.unitytesting.exceptions.DuplicatePlayRunReportException;
 import com.endregas.warriors.unitytesting.model.dto.BugReportDTO;
 import com.endregas.warriors.unitytesting.model.dto.PlayRunReportDTO;
 import com.endregas.warriors.unitytesting.model.utils.TimeInterval;
@@ -16,10 +15,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -33,7 +34,7 @@ public class DataInitialization {
     public static final String BUILD_10 = "1.0";
     public static final String BUILD_20 = "2.0";
     public static final String BUILD_TEST = "testBuild";
-    public static final String VIDEO_NAME = "black screen.mp4";
+    public static final String VIDEO_NAME = "black screen";
 
     GameService gameService;
     BuildService buildService;
@@ -41,7 +42,10 @@ public class DataInitialization {
     PlayRunService playRunService;
 
     @PostConstruct
-    public void initializeTestData() throws IOException, DuplicatePlayRunReportException {
+    public void initializeTestData() {
+        log.info("Clearing videos directory");
+        deleteDirectory("src\\main\\resources\\videos\\");
+
         log.info("Initializing test data");
 
         try {
@@ -72,23 +76,38 @@ public class DataInitialization {
                     .gameRef(GAME_1)
                     .buildRef(BUILD_10)
                     .videoRef(VIDEO_NAME)
-                    .bugReports(List.of(bugReport1))
+                    .bugReport(List.of(bugReport1))
                     .build());
             playRunService.saveReport(PlayRunReportDTO.builder()
                     .gameRef(GAME_1)
                     .buildRef(BUILD_20)
                     .videoRef(VIDEO_NAME)
-                    .bugReports(List.of(bugReport1, bugReport3))
+                    .bugReport(List.of(bugReport1, bugReport3))
                     .build());
             playRunService.saveReport(PlayRunReportDTO.builder()
                     .gameRef(GAME_2)
                     .buildRef(BUILD_TEST)
                     .videoRef(VIDEO_NAME)
-                    .bugReports(List.of(bugReport1, bugReport2, bugReport3))
+                    .bugReport(List.of(bugReport1, bugReport2, bugReport3))
                     .build());
         } catch (Exception e) {
-
         }
+    }
+
+    private static void deleteDirectory(String directoryName) {
+        File directory = new File(directoryName);
+        String[] allFiles = directory.list();
+        if (allFiles == null) {
+            directory.delete();
+            return;
+        }
+        for (File file : Arrays.stream(allFiles).map(s -> new File(directoryName + "/" + s)).collect(Collectors.toList())) {
+            if (file.isDirectory()) {
+                deleteDirectory(file.getAbsolutePath());
+            }
+            file.delete();
+        }
+        directory.delete();
     }
 
 }

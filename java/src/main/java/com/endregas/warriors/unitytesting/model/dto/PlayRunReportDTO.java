@@ -20,8 +20,6 @@ public class PlayRunReportDTO {
     private String buildRef;
     @NotBlank(message = "VideoRef cannot be blank or null")
     private String videoRef;
-    private List<BugReportDTO> bugReports;
-    //private List<LevelData> levelData;
-    //private Survey survey;
+    private List<BugReportDTO> bugReport;
 
 }

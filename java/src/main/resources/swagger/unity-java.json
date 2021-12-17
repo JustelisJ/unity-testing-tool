@@ -231,7 +231,7 @@
             "$ref": "#/parameters/Build"
           },
           {
-            "$ref": "#/parameters/Video"
+            "$ref": "#/parameters/PlayRun"
           }
         ],
         "responses": {
@@ -300,7 +300,7 @@
       "minLength": 1,
       "maxLength": 50
     },
-    "Video": {
+    "PlayRun": {
       "description": "Players run identifier",
       "name": "runId",
       "type": "string",
