@@ -6,6 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class TimeInterval {
-    private double from;
-    private double to;
+    private double start;
+    private double end;
 }

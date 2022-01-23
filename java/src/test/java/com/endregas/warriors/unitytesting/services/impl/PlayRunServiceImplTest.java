@@ -61,7 +61,7 @@ class PlayRunServiceImplTest {
                 .gameRef("other game")
                 .buildRef(BUILD)
                 .videoRef(PLAYRUN)
-                .bugReports(List.of())
+                .bugReport(List.of())
                 .build();
         assertThrows(DirectoryDoesNotExistException.class, () -> playRunService.saveReport(playRunReport));
     }
@@ -72,7 +72,7 @@ class PlayRunServiceImplTest {
                 .gameRef(GAME)
                 .buildRef("incorrect build")
                 .videoRef(PLAYRUN)
-                .bugReports(List.of())
+                .bugReport(List.of())
                 .build();
         when(commonValidations.validateThatGameBuildDirectoryExists(anyString(), anyString())).thenThrow(DirectoryDoesNotExistException.class);
         assertThrows(DirectoryDoesNotExistException.class, () -> playRunService.saveReport(playRunReport));
@@ -84,7 +84,7 @@ class PlayRunServiceImplTest {
                 .gameRef(GAME)
                 .buildRef(BUILD)
                 .videoRef(PLAYRUN)
-                .bugReports(List.of(bugReport1, bugReport2))
+                .bugReport(List.of(bugReport1, bugReport2))
                 .build();
         playRunService.saveReport(playRunReport);
         verify(bugService, times(1)).reportBugs(eq(GAME), eq(BUILD), eq(PLAYRUN), anyList());
@@ -96,7 +96,7 @@ class PlayRunServiceImplTest {
                 .gameRef(GAME)
                 .buildRef(BUILD)
                 .videoRef(PLAYRUN)
-                .bugReports(List.of(bugReport1, bugReport2))
+                .bugReport(List.of(bugReport1, bugReport2))
                 .build();
         playRunService.saveReport(playRunReport);
         when(playRunReportRepository.existsByReportKey(any(PlayRunReportKey.class))).thenReturn(true);
@@ -110,13 +110,13 @@ class PlayRunServiceImplTest {
                 .gameRef(GAME)
                 .buildRef(BUILD)
                 .videoRef(PLAYRUN)
-                .bugReports(List.of(bugReport1, bugReport2))
+                .bugReport(List.of(bugReport1, bugReport2))
                 .build();
         when(bugService.getBugsForARun(GAME, BUILD, PLAYRUN)).thenReturn(List.of(bugReport1, bugReport2));
         PlayRunReportDTO result = playRunService.getReport(GAME, BUILD, PLAYRUN);
         assertEquals(playRunReport.getGameRef(), result.getGameRef());
         assertEquals(playRunReport.getBuildRef(), result.getBuildRef());
         assertEquals(playRunReport.getVideoRef(), result.getVideoRef());
-        assertEquals(playRunReport.getBugReports(), result.getBugReports());
+        assertEquals(playRunReport.getBugReport(), result.getBugReport());
     }
 }

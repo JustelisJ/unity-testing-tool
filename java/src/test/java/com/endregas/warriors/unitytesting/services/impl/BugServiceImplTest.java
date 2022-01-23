@@ -45,7 +45,7 @@ class BugServiceImplTest {
         assertEquals(List.of(bugReportDTO).size(), result.size());
         assertEquals(bugReportDTO.getBugName(), result.get(0).getBugName());
         assertEquals(bugReportDTO.getBugDescription(), result.get(0).getBugDescription());
-        assertEquals(bugReportDTO.getTimeVideoReference().getFrom(), result.get(0).getTimeVideoReference().getFrom());
-        assertEquals(bugReportDTO.getTimeVideoReference().getTo(), result.get(0).getTimeVideoReference().getTo());
+        assertEquals(bugReportDTO.getTimeVideoReference().getStart(), result.get(0).getTimeVideoReference().getStart());
+        assertEquals(bugReportDTO.getTimeVideoReference().getEnd(), result.get(0).getTimeVideoReference().getEnd());
     }
 }
