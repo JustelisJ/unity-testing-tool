@@ -36,7 +36,7 @@
     </div>
 
     <div class="timeline-line">
-      <div class="bug-div change-color" *ngFor="let bug of playrunReport?.bugReports; let i = index"
+      <div class="bug-div change-color" *ngFor="let bug of playrunReport?.bugReport; let i = index"
         [attr.data-index]="i"
         [style.width]="bugWidth(bug) + '%'"
         [style.margin-left]="bugMargin(bug) + '%'"
@@ -58,8 +58,8 @@
 
     <h2 class="bug-list-text">Bugs List:</h2>
 
-    <ng-container *ngIf="playrunReport?.bugReports?.length > 0">
-      <div class="bug-info-container" *ngFor="let bug of playrunReport?.bugReports">
+    <ng-container *ngIf="playrunReport?.bugReport?.length > 0">
+      <div class="bug-info-container" *ngFor="let bug of playrunReport?.bugReport">
         <div class="bug-info-text">
           <h2 class="bug-name">Name: {{ bug.bugName }}</h2>
           <h3 class="bug-time">Time interval: {{ secondsToTimeString(bug) }}</h3>
@@ -70,7 +70,7 @@
       </div>
     </ng-container>
 
-    <ng-container *ngIf="!playrunReport?.bugReports || playrunReport?.bugReports.length <= 0">
+    <ng-container *ngIf="!playrunReport?.bugReport || playrunReport?.bugReport.length <= 0">
       <h2 class="error-message">There are no bugs registered for this run.</h2>
     </ng-container>
 

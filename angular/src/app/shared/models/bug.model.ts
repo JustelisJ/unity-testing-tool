@@ -14,8 +14,8 @@ export interface Bug {
 }
 
 export interface TimeInterval {
-  from: number;
-  to: number;
+  start: number;
+  end: number;
 }
 
 export interface PlayRunSurvey {

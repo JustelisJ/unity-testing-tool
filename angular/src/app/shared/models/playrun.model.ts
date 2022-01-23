@@ -4,7 +4,7 @@ export interface PlayRunReport {
   gameRef: string;
   buildRef: string;
   videoRef: string;
-  bugReports: Bug[];
+  bugReport: Bug[];
 }
 
 export interface LevelData {
