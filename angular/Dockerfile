@@ -9,4 +9,4 @@ RUN npm install
 RUN npm install -g @angular/cli
 
 # start app
-CMD ng serve --host 0.0.0.0
+CMD ng serve --host 0.0.0.0 --watch	--poll 2000
