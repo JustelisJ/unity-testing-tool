@@ -55,15 +55,19 @@ export class VideoComponent implements OnInit, AfterViewInit {
       this.videoName = params.playrun;
       this.videoService.playrunReport$.subscribe((p) => {
         this.playrunReport = p;
+        console.log('Received from service: ' + p);
+
+        console.log('Component contains this: ' + this.playrunReport);
+
         this.videoItems = [
           {
             name: this.videoName,
             src:
-              encodeURIComponent('assets/videos/') +
+              encodeURI('assets/videos/') +
               this.game +
-              encodeURIComponent('/') +
+              encodeURI('/') +
               this.build +
-              encodeURIComponent('/') +
+              encodeURI('/') +
               this.videoName,
             type: 'video/mp4',
           },
@@ -88,31 +92,31 @@ export class VideoComponent implements OnInit, AfterViewInit {
       .subscriptions.loadedMetadata.subscribe(this.initVdo.bind(this));
   }
 
-  bugsInit(): void {
-    const dummyBugs: Bug[] = [
-      {
-        bugName: 'test bug 1',
-        bugDescription: 'test description 1',
-        timeVideoReference: {
-          from: 10,
-          to: 30,
-        },
-      },
-      {
-        bugName: 'test bug 2',
-        bugDescription: 'test description 2',
-        timeVideoReference: {
-          from: 45,
-          to: 60,
-        },
-      },
-    ];
-    this.bugs = dummyBugs;
-  }
-
   initVdo(): void {
     this.data.play();
   }
+
+  // bugsInit(): void {
+  //   const dummyBugs: Bug[] = [
+  //     {
+  //       bugName: 'test bug 1',
+  //       bugDescription: 'test description 1',
+  //       timeVideoReference: {
+  //         from: 10,
+  //         to: 30,
+  //       },
+  //     },
+  //     {
+  //       bugName: 'test bug 2',
+  //       bugDescription: 'test description 2',
+  //       timeVideoReference: {
+  //         from: 45,
+  //         to: 60,
+  //       },
+  //     },
+  //   ];
+  //   this.bugs = dummyBugs;
+  // }
 
   startPlaylistVdo(item: any, index: number): void {
     this.activeIndex = index;
@@ -177,7 +181,9 @@ export class VideoComponent implements OnInit, AfterViewInit {
   bugWidth(bug: Bug): number {
     return (
       ((bug.timeVideoReference.to - bug.timeVideoReference.from) /
-        this.duration) * 100);
+        this.duration) *
+      100
+    );
   }
 
   bugMargin(bug: Bug): number {
