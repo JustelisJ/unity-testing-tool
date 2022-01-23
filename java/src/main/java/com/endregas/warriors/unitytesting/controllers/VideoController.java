@@ -22,7 +22,7 @@ public class VideoController {
 
     final VideoService videoService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/video")
     public ResponseEntity<List<String>> getAllVideos(
             @RequestParam(name = "game") @NotNull @Size(max = 50) String game,
@@ -45,7 +45,7 @@ public class VideoController {
         return ResponseEntity.ok().body("File is uploaded successfully");
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/video/recent")
     public ResponseEntity<String> getMostRecentVideo() throws NoVideosException, VideoNotFoundException {
         String lastModifiedVideoFile = videoService.findMostRecentVideo();

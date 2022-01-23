@@ -18,7 +18,7 @@ public class BuildController {
 
     final BuildService buildService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/game/build")
     public ResponseEntity<List<String>> getAllBuilds(
             @RequestParam(name = "game") @NotNull @Size(max = 50) String game) throws DirectoryDoesNotExistException {

@@ -26,7 +26,7 @@ public class PlayRunServiceImpl implements PlayRunService {
             throw new DuplicatePlayRunReportException();
         }
         validateGameAndBuild(report.getGameRef(), report.getBuildRef());
-        bugService.reportBugs(report.getGameRef(), report.getBuildRef(), report.getVideoRef(), report.getBugReports());
+        bugService.reportBugs(report.getGameRef(), report.getBuildRef(), report.getVideoRef(), report.getBugReport());
         playRunReportRepository.save(new PlayRunReportUploads(new PlayRunReportKey(report.getGameRef(), report.getBuildRef(), report.getVideoRef())));
     }
 
@@ -37,7 +37,7 @@ public class PlayRunServiceImpl implements PlayRunService {
                 .gameRef(game)
                 .buildRef(build)
                 .videoRef(playRun)
-                .bugReports(bugService.getBugsForARun(game, build, playRun))
+                .bugReport(bugService.getBugsForARun(game, build, playRun))
                 .build();
     }
 
