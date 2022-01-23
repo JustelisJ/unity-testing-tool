@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { VideoService } from '../../shared/services/video.service';
-import { Bug } from '../../shared/models/bug.model';
+import { Bug, TimeInterval } from '../../shared/models/bug.model';
 import { VideoObject } from 'src/app/shared/models/video.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -55,15 +55,16 @@ export class VideoComponent implements OnInit, AfterViewInit {
       this.videoName = params.playrun;
       this.videoService.playrunReport$.subscribe((p) => {
         this.playrunReport = p;
+
         this.videoItems = [
           {
             name: this.videoName,
             src:
-              encodeURIComponent('assets/videos/') +
+              encodeURI('assets/videos/') +
               this.game +
-              encodeURIComponent('/') +
+              encodeURI('/') +
               this.build +
-              encodeURIComponent('/') +
+              encodeURI('/') +
               this.videoName,
             type: 'video/mp4',
           },
@@ -88,31 +89,31 @@ export class VideoComponent implements OnInit, AfterViewInit {
       .subscriptions.loadedMetadata.subscribe(this.initVdo.bind(this));
   }
 
-  bugsInit(): void {
-    const dummyBugs: Bug[] = [
-      {
-        bugName: 'test bug 1',
-        bugDescription: 'test description 1',
-        timeVideoReference: {
-          from: 10,
-          to: 30,
-        },
-      },
-      {
-        bugName: 'test bug 2',
-        bugDescription: 'test description 2',
-        timeVideoReference: {
-          from: 45,
-          to: 60,
-        },
-      },
-    ];
-    this.bugs = dummyBugs;
-  }
-
   initVdo(): void {
     this.data.play();
   }
+
+  // bugsInit(): void {
+  //   const dummyBugs: Bug[] = [
+  //     {
+  //       bugName: 'test bug 1',
+  //       bugDescription: 'test description 1',
+  //       timeVideoReference: {
+  //         from: 10,
+  //         to: 30,
+  //       },
+  //     },
+  //     {
+  //       bugName: 'test bug 2',
+  //       bugDescription: 'test description 2',
+  //       timeVideoReference: {
+  //         from: 45,
+  //         to: 60,
+  //       },
+  //     },
+  //   ];
+  //   this.bugs = dummyBugs;
+  // }
 
   startPlaylistVdo(item: any, index: number): void {
     this.activeIndex = index;
@@ -135,9 +136,9 @@ export class VideoComponent implements OnInit, AfterViewInit {
   secondsToTimeString(bug: Bug): string {
     let timeString = '';
     if (bug) {
-      const minutes = Math.floor(bug.timeVideoReference.from / 60);
-      const seconds = Math.floor(bug.timeVideoReference.from - minutes * 60);
-      const hours = Math.floor(bug.timeVideoReference.from / 3600);
+      const minutes = Math.floor(bug.timeVideoReference.start / 60);
+      const seconds = Math.floor(bug.timeVideoReference.start - minutes * 60);
+      const hours = Math.floor(bug.timeVideoReference.start / 3600);
       timeString =
         (hours < 10 ? '0' + hours : hours) +
         ':' +
@@ -146,9 +147,9 @@ export class VideoComponent implements OnInit, AfterViewInit {
         (seconds < 10 ? '0' + seconds : seconds);
     }
     if (bug) {
-      const minutes = Math.floor(bug.timeVideoReference.to / 60);
-      const seconds = Math.floor(bug.timeVideoReference.to - minutes * 60);
-      const hours = Math.floor(bug.timeVideoReference.to / 3600);
+      const minutes = Math.floor(bug.timeVideoReference.end / 60);
+      const seconds = Math.floor(bug.timeVideoReference.end - minutes * 60);
+      const hours = Math.floor(bug.timeVideoReference.end / 3600);
       timeString +=
         ' - ' +
         (hours < 10 ? '0' + hours : hours) +
@@ -163,10 +164,10 @@ export class VideoComponent implements OnInit, AfterViewInit {
   randColorPick(): void {
     if (
       this.playrunReport &&
-      this.playrunReport.bugReports &&
-      this.playrunReport.bugReports.length > 0
+      this.playrunReport.bugReport &&
+      this.playrunReport.bugReport.length > 0
     ) {
-      this.playrunReport.bugReports.forEach(() => {
+      this.playrunReport.bugReport.forEach(() => {
         this.colors.push(
           '#' + Math.floor(Math.random() * 16777215).toString(16)
         );
@@ -176,19 +177,21 @@ export class VideoComponent implements OnInit, AfterViewInit {
 
   bugWidth(bug: Bug): number {
     return (
-      ((bug.timeVideoReference.to - bug.timeVideoReference.from) /
-        this.duration) * 100);
+      ((bug.timeVideoReference.end - bug.timeVideoReference.start) /
+        this.duration) *
+      100
+    );
   }
 
   bugMargin(bug: Bug): number {
-    return (bug.timeVideoReference.from / this.duration) * 100;
+    return (bug.timeVideoReference.start / this.duration) * 100;
   }
 
   showBugInfoOnClick(bug: Bug): void {
     this.activeBug = true;
     this.bugName = bug.bugName;
     this.bugDescription = bug.bugDescription;
-    this.data.getDefaultMedia().currentTime = bug.timeVideoReference.from;
+    this.data.getDefaultMedia().currentTime = bug.timeVideoReference.start;
   }
 
   showInfoOnHover(bug: Bug): void {
