@@ -29,9 +29,9 @@ public class PlayRunReportController {
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/playrun",
             produces = "application/json")
-    public ResponseEntity<PlayRunReportDTO> getVideoReport(String game, String build, String playRun) throws DirectoryDoesNotExistException {
-        log.info("Getting video report for {}/{}/{}", game, build, playRun);
-        return ResponseEntity.ok().body(playRunService.getReport(game, build, playRun));
+    public ResponseEntity<PlayRunReportDTO> getVideoReport(String game, String build, String playrun) throws DirectoryDoesNotExistException {
+        log.info("Getting video report for {}/{}/{}", game, build, playrun);
+        return ResponseEntity.ok().body(playRunService.getReport(game, build, playrun));
     }
 
 }
